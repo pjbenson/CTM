@@ -6,7 +6,7 @@ import com.betfair.enums.Side;
 public class PlaceInstruction {
 
 	private OrderType orderType;
-	private long selectionId;
+	private Long selectionId;
 	private double handicap;
 	private Side side;
 	private LimitOrder limitOrder;
@@ -23,7 +23,7 @@ public class PlaceInstruction {
 		return selectionId;
 	}
 
-	public void setSelectionId(long selectionId) {
+	public void setSelectionId(Long selectionId) {
 		this.selectionId = selectionId;
 	}
 

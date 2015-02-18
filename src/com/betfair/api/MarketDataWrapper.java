@@ -22,7 +22,7 @@ import com.betfair.jsonrpc.JsonConverter;
 import com.betfair.jsonrpc.JsonrpcRequest;
 
 public class MarketDataWrapper implements IMarketDataSource{
-	private final String INSTRUCTIONS = null;
+	private final String INSTRUCTIONS = "instructions";
 	private final String CUSTOMER_REF = null;
 	private static MarketDataWrapper instance;
 	private final String MAX_RESULT = "maxResults";
@@ -77,11 +77,10 @@ public class MarketDataWrapper implements IMarketDataSource{
 	}
 
 	@Override
-	public PlaceExecutionReport placeOrders(String marketId, List<PlaceInstruction> instructions, String customerRef) throws APINGException {
+	public PlaceExecutionReport placeOrders(String marketId, List<PlaceInstruction> instructions) throws APINGException {
 		Map<String, Object> params = new HashMap<String, Object>();
         params.put(MARKET_ID, marketId);
         params.put(INSTRUCTIONS, instructions);
-        params.put(CUSTOMER_REF, customerRef);
         String result = getInstance().request(Operation.PLACORDERS.getOperationName(), params);
 
         PlaceOrders orders = JsonConverter.convertFromJson(result, PlaceOrders.class);

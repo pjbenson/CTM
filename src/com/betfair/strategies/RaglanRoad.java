@@ -21,8 +21,11 @@ import com.betfair.entities.PlaceExecutionReport;
 import com.betfair.entities.PlaceInstruction;
 import com.betfair.entities.Runner;
 import com.betfair.entities.TimeRange;
+import com.betfair.enums.ExecutionReportStatus;
 import com.betfair.enums.MarketProjection;
 import com.betfair.enums.OrderProjection;
+import com.betfair.enums.OrderType;
+import com.betfair.enums.PersistenceType;
 import com.betfair.enums.Side;
 import com.betfair.exceptions.APINGException;
 
@@ -46,7 +49,7 @@ public class RaglanRoad {
 		PlaceInstruction instruction1 = new PlaceInstruction();
 		PlaceInstruction instruction2 = new PlaceInstruction();
 		PlaceInstruction instruction3 = new PlaceInstruction();
-		
+
 		double price1;
 		double price2;
 		double price3;
@@ -60,7 +63,7 @@ public class RaglanRoad {
 		double exp1;
 		double exp2;
 		double exp3;
-		
+
 		for(MarketBook mb: marketBooks){
 			price1 = mb.getRunners().get(0).getLastPriceTraded();
 			price2 = mb.getRunners().get(1).getLastPriceTraded();
@@ -79,75 +82,91 @@ public class RaglanRoad {
 			System.out.print(ratio1+" "+ratio2+" "+ratio3+"\n");
 			System.out.print(exp1+" "+exp2+" "+exp3+"\n");
 			
+			//TODO: create for loop to create instructions 1, 2 and 3
 			instruction1.setSelectionId(mb.getRunners().get(0).getSelectionId());
 			instruction1.setSide(Side.BACK);
+			instruction1.setHandicap(0);
+			instruction1.setOrderType(OrderType.LIMIT);
 			LimitOrder limitOrder = new LimitOrder();
 			limitOrder.setPrice(price1);
+			limitOrder.setSize(ratio1);
+			limitOrder.setPersistenceType(PersistenceType.LAPSE);
 			instruction1.setLimitOrder(limitOrder);
 			instructions.add(instruction1);
-			
+
 			instruction2.setSelectionId(mb.getRunners().get(1).getSelectionId());
 			instruction2.setSide(Side.BACK);
-			limitOrder.setPrice(price2);
-			instruction2.setLimitOrder(limitOrder);
+			instruction2.setHandicap(0);
+			instruction2.setOrderType(OrderType.LIMIT);
+			LimitOrder limitOrder2 = new LimitOrder();
+			limitOrder2.setPrice(price2);
+			limitOrder2.setSize(ratio2);
+			limitOrder2.setPersistenceType(PersistenceType.LAPSE);
+			instruction2.setLimitOrder(limitOrder2);
 			instructions.add(instruction2);
-			//TODO: need to create two other instruction variables and add them to instructions collection
 			
-			PlaceExecutionReport placeBetResult = dataSource.placeOrders(mb.getMarketId(), instructions, "1");
-		}
+			instruction3.setSelectionId(mb.getRunners().get(2).getSelectionId());
+			instruction3.setSide(Side.BACK);
+			instruction3.setHandicap(0);
+			instruction3.setOrderType(OrderType.LIMIT);
+			LimitOrder limitOrder3 = new LimitOrder();
+			limitOrder3.setPrice(price3);
+			limitOrder3.setSize(ratio3);
+			limitOrder3.setPersistenceType(PersistenceType.LAPSE);
+			instruction3.setLimitOrder(limitOrder3);
+			instructions.add(instruction3);
 
-//		for (Map.Entry<Long, Double> entry: getFavourites().entrySet()) {
-//			if(count == 0)
-//				price1 = entry.getValue();
-//			if(count == 1)
-//				price2 = entry.getValue();
-//			if(count == 2)
-//				price3 = entry.getValue();
+			PlaceExecutionReport placeBetResult = dataSource.placeOrders(mb.getMarketId(), instructions);
+			
+			if (placeBetResult.getStatus() == ExecutionReportStatus.SUCCESS) {
+                System.out.println("Your bet has been placed!!");
+                System.out.println(placeBetResult.getInstructionReports());
+            } else if (placeBetResult.getStatus() == ExecutionReportStatus.FAILURE) {
+                System.out.println("Your bet has NOT been placed :*( ");
+                System.out.println("The error is: " + placeBetResult.getErrorCode() + ": " + placeBetResult.getErrorCode().getMessage());
+            }
+		}
+	}
+
+//	public Map<Long, Double> getFavourites() throws APINGException{
+//		Map<Long, Double> bets = new HashMap<Long, Double>();
 //
+//		int count = 0;
+//		int max = 3;
+//		for (Map.Entry<Long, Double> entry: getSortedRunners().entrySet()) {
+//			if (count >= max) break;
+//			bets.put(entry.getKey(), entry.getValue());
 //			count++;
 //		}
-	}
+//
+//		return bets;
+//	}
 
-	public Map<Long, Double> getFavourites() throws APINGException{
-		Map<Long, Double> bets = new HashMap<Long, Double>();
-
-		int count = 0;
-		int max = 3;
-		for (Map.Entry<Long, Double> entry: getSortedRunners().entrySet()) {
-			if (count >= max) break;
-			bets.put(entry.getKey(), entry.getValue());
-			count++;
-		}
-
-		return bets;
-	}
-
-	public Map<Long, Double> getSortedRunners() throws APINGException{
-		Map<Long, Double> horsesAndPrices = new TreeMap<Long, Double>();
-		List<MarketBook> list = getMarketPrices();
-
-		for(MarketBook mb: list){
-			for(Runner runner: mb.getRunners()){
-				horsesAndPrices.put(runner.getSelectionId(), runner.getLastPriceTraded());
-			}
-		}
-		ValueComparator bvc =  new ValueComparator(horsesAndPrices);
-		TreeMap<Long, Double> sorted_map = new TreeMap<Long, Double>(bvc);
-		sorted_map.putAll(horsesAndPrices);
-
-		return sorted_map;
-	}
+//	public Map<Long, Double> getSortedRunners() throws APINGException{
+//		Map<Long, Double> horsesAndPrices = new TreeMap<Long, Double>();
+//		List<MarketBook> list = getMarketPrices();
+//
+//		for(MarketBook mb: list){
+//			for(Runner runner: mb.getRunners()){
+//				horsesAndPrices.put(runner.getSelectionId(), runner.getLastPriceTraded());
+//			}
+//		}
+//		ValueComparator bvc =  new ValueComparator(horsesAndPrices);
+//		TreeMap<Long, Double> sorted_map = new TreeMap<Long, Double>(bvc);
+//		sorted_map.putAll(horsesAndPrices);
+//
+//		return sorted_map;
+//	}
 
 	public List<MarketBook> getMarketPrices() throws APINGException{
 		List<MarketCatalogue> markets = getListMarketCatalogue();
 		List<String> marketIds = new ArrayList<String>();
-		marketIds.add(markets.get(1).getMarketId());
-		//		TimerTask task = new RunStrategyTimerTask();
-		//		timer.schedule(task, markets.get(0).getMarketTime());
+		//marketIds.add(markets.get(1).getMarketId());
 		//TODO: create a timer than runs for 2 mins before each market start time
-//		for(MarketCatalogue market: markets){
-//			marketIds.add(market.getMarketId());
-//		}
+		for(MarketCatalogue market: markets){
+			//TODO persist market info and runner data
+			marketIds.add(market.getMarketId());
+		}
 
 		return dataSource.listMarketBook(marketIds, OrderProjection.EXECUTABLE);
 	}
@@ -160,7 +179,7 @@ public class RaglanRoad {
 		countries.add("IE");
 		typesCode.add("WIN");
 		time.setFrom(new Date());
-		//time.setTo(dt);
+		time.setTo(dt);
 		marketFilter.setMarketCountries(countries);
 		marketFilter.setMarketTypeCodes(typesCode);
 		marketFilter.setEventTypeIds(eventTypeIds);
@@ -169,35 +188,27 @@ public class RaglanRoad {
 		String maxResults = "100";
 		List<MarketCatalogue> listMarketCatalogue = dataSource.listMarketCatalogue(marketFilter, marketProjection, maxResults);
 		List<MarketCatalogue> result = new ArrayList<MarketCatalogue>();
-		for(MarketCatalogue m: listMarketCatalogue){
-			if(m.getMarketName().contains("Mdn")){
-				result.add(m);
+		for(MarketCatalogue marketCatalogue: listMarketCatalogue){
+			if(marketCatalogue.getMarketName().contains("Mdn") && marketCatalogue.getMarketName().contains("Hrd")){
+				result.add(marketCatalogue);
 			}
 		}
 		return result;
 	}
 
-	class ValueComparator implements Comparator {
-
-		Map map;
-		public ValueComparator(Map map){
-			this.map = map;
-		}
-		public int compare(Object keyA, Object keyB){
-			Comparable valueA = (Comparable) map.get(keyA);
-			Comparable valueB = (Comparable) map.get(keyB);
-			
-			return valueA == null?(valueB==null ? 0 : Integer.MAX_VALUE) : (valueB==null ? Integer.MIN_VALUE : valueA.compareTo(valueB));
-
-		}
-	}
-
-	class RunStrategyTimerTask extends TimerTask {
-		@Override
-		public void run() {
-			System.out.println("Start time:" );
-		}
-
-	}
+//	class ValueComparator implements Comparator {
+//
+//		Map map;
+//		public ValueComparator(Map map){
+//			this.map = map;
+//		}
+//		public int compare(Object keyA, Object keyB){
+//			Comparable valueA = (Comparable) map.get(keyA);
+//			Comparable valueB = (Comparable) map.get(keyB);
+//
+//			return valueA == null?(valueB==null ? 0 : Integer.MAX_VALUE) : (valueB==null ? Integer.MIN_VALUE : valueA.compareTo(valueB));
+//
+//		}
+//	}
 
 }

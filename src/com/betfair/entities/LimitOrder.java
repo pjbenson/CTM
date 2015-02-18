@@ -1,10 +1,12 @@
 package com.betfair.entities;
 
+import com.betfair.enums.PersistenceType;
 
 public class LimitOrder {
 
 	private double size;
 	private double price;
+	private PersistenceType persistenceType;
 
 	public double getSize() {
 		return size;
@@ -20,5 +22,13 @@ public class LimitOrder {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public PersistenceType getPersistenceType() {
+		return persistenceType;
+	}
+
+	public void setPersistenceType(PersistenceType persistenceType) {
+		this.persistenceType = persistenceType;
 	}
 }

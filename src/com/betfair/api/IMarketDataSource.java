@@ -20,7 +20,7 @@ public interface IMarketDataSource {
 	
 	public List<MarketBook> listMarketBook(List<String> marketIds, OrderProjection orderProjection) throws APINGException;
 	
-	public PlaceExecutionReport placeOrders(String marketId, List<PlaceInstruction> instructions, String customerRef) throws APINGException;
+	public PlaceExecutionReport placeOrders(String marketId, List<PlaceInstruction> instructions) throws APINGException;
 	
 	public String request(String operation, Map<String, Object> params) throws APINGException;
 

@@ -49,5 +49,6 @@
 	<classpathentry kind="lib" path="C:/Users/paulb/Downloads/HTTPClient-0.3-3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/paulb/Downloads/log4j-1.2.12.jar"/>
 	<classpathentry kind="lib" path="C:/Users/paulb/Downloads/dateutils-1.0.8.jar/dateutils-1.0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/Downloads/spring-boot-starter-web-1.2.1.RELEASE.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
