@@ -15,7 +15,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @NamedQueries({		
 	@NamedQuery(name = "Market.findById", query = "select o from MarketCatalogue o where o.marketId=:a"),
@@ -31,7 +30,7 @@ public class MarketCatalogue implements java.io.Serializable{
 	private String marketId;
 	@Column(name="MARKET_NAME")
 	private String marketName;
-	@OneToMany//(mappedBy="marketCatalogue")
+	@OneToMany
 	@JoinTable(name = "market_runner", joinColumns = @JoinColumn(name = "market_catalogue_market_id"), inverseJoinColumns = @JoinColumn(name = "runner_catalogue_selection_id"))
 	private List<RunnerCatalogue> runners = new ArrayList<RunnerCatalogue>();
 	@Column(name="MARKET_START_NAME")
