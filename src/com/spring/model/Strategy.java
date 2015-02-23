@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
@@ -23,6 +24,7 @@ public class Strategy implements Serializable{
 	@Column(name = "STRATEGY_NAME")
 	private String name;
 	
+	@Transient
 	private List<Account> accounts;
 	
 	public String getName() {

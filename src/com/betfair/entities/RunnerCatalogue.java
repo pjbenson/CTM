@@ -1,9 +1,22 @@
 package com.betfair.entities;
 
-public class RunnerCatalogue {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+@Entity
+@Table(name="Runner_Catalogue")
+public class RunnerCatalogue implements java.io.Serializable{
+
+	private static final long serialVersionUID = 1L;
+	@Id
+	@Column(name="SELECTION_ID")
 	private Long selectionId;
+	@Column(name="RUNNER_NAME")
 	private String runnerName;
+	@Transient
 	private Double handicap;
 
 	public Long getSelectionId() {

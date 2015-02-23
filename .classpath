@@ -50,5 +50,21 @@
 	<classpathentry kind="lib" path="C:/Users/paulb/Downloads/log4j-1.2.12.jar"/>
 	<classpathentry kind="lib" path="C:/Users/paulb/Downloads/dateutils-1.0.8.jar/dateutils-1.0.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/paulb/Downloads/spring-boot-starter-web-1.2.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/Documents/College/CatchTheMonkey/workspace/CTM/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/Documents/College/DistributedSystems/Eclipse/workspace/DIT/lib/hibernate3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/Documents/College/DistributedSystems/Eclipse/workspace/DIT/lib/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/Documents/College/DistributedSystems/Eclipse/workspace/DIT/lib/hibernate-commons-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/Documents/College/DistributedSystems/Eclipse/workspace/DIT/lib/hibernate-entitymanager.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/Documents/College/DistributedSystems/Eclipse/workspace/DIT/lib/hibernate-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/Documents/College/DistributedSystems/Eclipse/workspace/DIT/lib/c3p0-0.9.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulb/.m2/repository/org/hibernate/ejb3-persistence/1.0.1.GA/ejb3-persistence-1.0.1.GA.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.hibernate"/>
+			<attribute name="maven.artifactId" value="ejb3-persistence"/>
+			<attribute name="maven.version" value="1.0.1.GA"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

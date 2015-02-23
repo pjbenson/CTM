@@ -1,25 +1,22 @@
 package com.betfair.strategies;
 
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.util.TreeMap;
 
 import com.betfair.api.IMarketDataSource;
+import com.betfair.dao.Persister;
 import com.betfair.entities.LimitOrder;
 import com.betfair.entities.MarketBook;
 import com.betfair.entities.MarketCatalogue;
 import com.betfair.entities.MarketFilter;
 import com.betfair.entities.PlaceExecutionReport;
 import com.betfair.entities.PlaceInstruction;
-import com.betfair.entities.Runner;
+import com.betfair.entities.RunnerCatalogue;
 import com.betfair.entities.TimeRange;
 import com.betfair.enums.ExecutionReportStatus;
 import com.betfair.enums.MarketProjection;
@@ -30,6 +27,7 @@ import com.betfair.enums.Side;
 import com.betfair.exceptions.APINGException;
 
 public class RaglanRoad {
+	private static Double AMOUNT = 100.0;
 	private IMarketDataSource dataSource;
 	private Set<String> eventTypeIds = new HashSet<String>();
 	private MarketFilter marketFilter = new MarketFilter();
@@ -38,12 +36,14 @@ public class RaglanRoad {
 	private TimeRange time = new TimeRange();
 	private Set<MarketProjection> marketProjection = new HashSet<MarketProjection>();
 	private Timer timer = new Timer(true);
+	private Persister persister;
 
 	public RaglanRoad(IMarketDataSource marketData){
 		dataSource = marketData;
+		persister = new Persister();
 	}
 
-	public void strategyCalculation() throws APINGException{
+	public void strategyCalculation() throws APINGException, ParseException{
 		List<MarketBook> marketBooks = getMarketPrices();
 		List<PlaceInstruction> instructions = new ArrayList<PlaceInstruction>();
 		PlaceInstruction instruction1 = new PlaceInstruction();
@@ -72,9 +72,9 @@ public class RaglanRoad {
 			b = price1*price3;
 			c = price1*price2;
 			total = a+b+c;
-			ratio1 = Math.round((a/total)*100);
-			ratio2 = Math.round((b/total)*100);
-			ratio3 = Math.round((c/total)*100);
+			ratio1 = Math.round((a/total)*AMOUNT);
+			ratio2 = Math.round((b/total)*AMOUNT);
+			ratio3 = Math.round((c/total)*AMOUNT);
 			exp1 = Math.round(ratio1*price1);
 			exp2 = Math.round(ratio2*price2);
 			exp3 = Math.round(ratio3*price3);
@@ -127,51 +127,20 @@ public class RaglanRoad {
             }
 		}
 	}
-
-//	public Map<Long, Double> getFavourites() throws APINGException{
-//		Map<Long, Double> bets = new HashMap<Long, Double>();
-//
-//		int count = 0;
-//		int max = 3;
-//		for (Map.Entry<Long, Double> entry: getSortedRunners().entrySet()) {
-//			if (count >= max) break;
-//			bets.put(entry.getKey(), entry.getValue());
-//			count++;
-//		}
-//
-//		return bets;
-//	}
-
-//	public Map<Long, Double> getSortedRunners() throws APINGException{
-//		Map<Long, Double> horsesAndPrices = new TreeMap<Long, Double>();
-//		List<MarketBook> list = getMarketPrices();
-//
-//		for(MarketBook mb: list){
-//			for(Runner runner: mb.getRunners()){
-//				horsesAndPrices.put(runner.getSelectionId(), runner.getLastPriceTraded());
-//			}
-//		}
-//		ValueComparator bvc =  new ValueComparator(horsesAndPrices);
-//		TreeMap<Long, Double> sorted_map = new TreeMap<Long, Double>(bvc);
-//		sorted_map.putAll(horsesAndPrices);
-//
-//		return sorted_map;
-//	}
-
-	public List<MarketBook> getMarketPrices() throws APINGException{
+	
+	public List<MarketBook> getMarketPrices() throws APINGException, ParseException{
 		List<MarketCatalogue> markets = getListMarketCatalogue();
 		List<String> marketIds = new ArrayList<String>();
-		//marketIds.add(markets.get(1).getMarketId());
+		//marketIds.add(markets.get(0).getMarketId());
 		//TODO: create a timer than runs for 2 mins before each market start time
 		for(MarketCatalogue market: markets){
-			//TODO persist market info and runner data
 			marketIds.add(market.getMarketId());
 		}
 
 		return dataSource.listMarketBook(marketIds, OrderProjection.EXECUTABLE);
 	}
 
-	public List<MarketCatalogue> getListMarketCatalogue() throws APINGException{
+	public List<MarketCatalogue> getListMarketCatalogue() throws APINGException, ParseException{
 		Date dt = new Date();
 		dt.setHours(17);
 		eventTypeIds.add("7");
@@ -183,32 +152,28 @@ public class RaglanRoad {
 		marketFilter.setMarketCountries(countries);
 		marketFilter.setMarketTypeCodes(typesCode);
 		marketFilter.setEventTypeIds(eventTypeIds);
-		marketFilter.setMarketStartTime(time);
+		//marketFilter.setMarketStartTime(time);
 		marketProjection.add(MarketProjection.MARKET_START_TIME);
+		marketProjection.add(MarketProjection.RUNNER_DESCRIPTION);
 		String maxResults = "100";
 		List<MarketCatalogue> listMarketCatalogue = dataSource.listMarketCatalogue(marketFilter, marketProjection, maxResults);
 		List<MarketCatalogue> result = new ArrayList<MarketCatalogue>();
+	
 		for(MarketCatalogue marketCatalogue: listMarketCatalogue){
 			if(marketCatalogue.getMarketName().contains("Mdn") && marketCatalogue.getMarketName().contains("Hrd")){
 				result.add(marketCatalogue);
+				for(RunnerCatalogue rc: marketCatalogue.getRunners()){
+					persister.persistRunnerCatalogue(rc);
+				}
+				persister.persistMarketCatalogue(marketCatalogue);
 			}
 		}
+		//persister.closeResources();
 		return result;
 	}
 
-//	class ValueComparator implements Comparator {
-//
-//		Map map;
-//		public ValueComparator(Map map){
-//			this.map = map;
-//		}
-//		public int compare(Object keyA, Object keyB){
-//			Comparable valueA = (Comparable) map.get(keyA);
-//			Comparable valueB = (Comparable) map.get(keyB);
-//
-//			return valueA == null?(valueB==null ? 0 : Integer.MAX_VALUE) : (valueB==null ? Integer.MIN_VALUE : valueA.compareTo(valueB));
-//
-//		}
-//	}
+	public void setAMOUNT(Double amount) {
+		AMOUNT += amount;
+	}
 
 }
