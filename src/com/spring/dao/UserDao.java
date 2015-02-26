@@ -6,6 +6,8 @@ import com.spring.model.User;
 
 public interface UserDao {
 	
+	public void updateBalance(User user);
+	
 	public void addUser(User user);
 	
 	public List<User> userList();

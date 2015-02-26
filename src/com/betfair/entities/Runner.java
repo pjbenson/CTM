@@ -3,17 +3,41 @@ package com.betfair.entities;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name="Runner")
 public class Runner {
+	@Id
+	@Column(name="SELECTION_ID")
 	private Long selectionId;
+	@Transient
 	private Double handicap;
+	@Transient
 	private String status;
+	@Transient
 	private Double adjustmentFactor;
+	@Column(name="PRICE")
 	private Double lastPriceTraded;
+	@Transient
 	private Double totalMatched;
+	@Transient
 	private Date removalDate;
+	@Transient
 	private StartingPrices sp;
+	@Transient
 	private ExchangePrices ex;
+	@OneToMany
+	@JoinTable(name = "runner_order", joinColumns = @JoinColumn(name = "selection_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
 	private List<Order> orders;
+	@Transient
 	private List<Match> matches;
 
 	public Long getSelectionId() {

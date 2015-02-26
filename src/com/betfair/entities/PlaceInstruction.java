@@ -4,7 +4,7 @@ import com.betfair.enums.OrderType;
 import com.betfair.enums.Side;
 
 public class PlaceInstruction {
-
+	
 	private OrderType orderType;
 	private Long selectionId;
 	private double handicap;

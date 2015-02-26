@@ -2,22 +2,46 @@ package com.betfair.entities;
 
 import java.util.Date;
 
-public class Order {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+@Entity
+@Table(name="Bet_Order")
+public class Order {
+	@Id
+	@Column(name="ORDER_ID")
+	private int orderId;
+	@Transient
 	private String betId;
+	@Column(name="ORDER_TYPE")
 	private String orderType;
+	@Transient
 	private String status;
+	@Transient
 	private String persistenceType;
+	@Column(name="SIDE")
 	private String side;
+	@Column(name="PRICE")
 	private Double price;
+	@Column(name="SIZE")
 	private Double size;
+	@Transient
 	private Double bspLiability;
 	private Date placedDate;
+	@Transient
 	private Double avgPriceMatched;
+	@Transient
 	private Double sizeMatched;
+	@Transient
 	private Double sizeRemaining;
+	@Transient
 	private Double sizeLapsed;
+	@Transient
 	private Double sizeCancelled;
+	@Transient
 	private Double sizeVoided;
 
 	public String getBetId() {

@@ -42,4 +42,9 @@ public class UserDaoImpl implements UserDao {
 		
 	}
 
+	@Override
+	public void updateBalance(User user) {
+		sessionFactory.getCurrentSession().saveOrUpdate(user);
+	}
+
 }

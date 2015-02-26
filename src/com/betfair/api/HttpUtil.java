@@ -36,7 +36,7 @@ public class HttpUtil {
             post.setHeader(HTTP_HEADER_ACCEPT, "application/json");
             post.setHeader(HTTP_HEADER_ACCEPT_CHARSET, "UTF-8");
             post.setHeader(HTTP_HEADER_X_APPLICATION, "XaBM5CwzIU1oLrgw");
-            post.setHeader(HTTP_HEADER_X_AUTHENTICATION, "tyqffDkqADWva6iazE/LHhDHLy6eikVJW8hnLqopsBU=");
+            post.setHeader(HTTP_HEADER_X_AUTHENTICATION, "so7nPOd6gFaY1qJ2PoLSPU+orxK/eWT/MWmYrAYxnZg=");
 
             post.setEntity(new StringEntity(jsonRequest, "UTF-8"));
 

@@ -31,7 +31,7 @@
 <link href="../assets/css/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 body {
-	padding-top: 40px;
+	padding-top: 70px;
 	padding-bottom: 40px;
 	background-color: #f5f5f5;
 }

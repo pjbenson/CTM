@@ -3,9 +3,14 @@ package com.betfair.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
+@NamedQueries({		
+	@NamedQuery(name = "Runners.findById", query = "select o from RunnerCatalogue o where o.selectionId=:a"),
+	@NamedQuery(name = "Runners.findAll", query = "select o from RunnerCatalogue o")
+})
 @Entity
 @Table(name="Runner_Catalogue")
 public class RunnerCatalogue implements java.io.Serializable{

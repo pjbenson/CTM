@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,7 +27,11 @@ public class Strategy implements Serializable{
 	@Column(name = "STRATEGY_NAME")
 	private String name;
 	
-	@Transient
+	@Column(name = "STRATEGY_POOL")
+	private Double pool;
+	
+	@OneToMany
+	@JoinTable(name = "strategy_accounts", joinColumns = @JoinColumn(name = "strategy_id"), inverseJoinColumns = @JoinColumn(name = "account_id"))
 	private List<Account> accounts;
 	
 	public String getName() {
@@ -38,6 +45,12 @@ public class Strategy implements Serializable{
 	}
 	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
+	}
+	public Double getPool() {
+		return pool;
+	}
+	public void setPool(Double pool) {
+		this.pool = pool;
 	}
 
 }

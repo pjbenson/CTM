@@ -38,7 +38,7 @@ public class LoginController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST)
-	public String processForm(@ModelAttribute("user") User user, BindingResult result, Map model) {
+	public String processForm(@ModelAttribute("user") User user, BindingResult result, Map model, HttpSession sessionObj) {
 
 		if (result.hasErrors()) {
 			return "loginform";
@@ -46,6 +46,7 @@ public class LoginController {
 		User currentUser = loginService.checkLogin(user.getUserEmail(), user.getUserPassword());
 		if(currentUser != null){
 			model.put("user", currentUser);
+			sessionObj.setAttribute("user", currentUser);
 			return "loginsuccess";
 		}else{
 			result.rejectValue("userEmail","invaliduser");

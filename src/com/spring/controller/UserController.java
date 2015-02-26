@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.bean.AccountBean;
@@ -19,6 +22,7 @@ import com.spring.model.Account;
 import com.spring.model.User;
 import com.spring.service.UserService;
 
+@SessionAttributes("user")
 @Controller
 public class UserController {
 
@@ -29,7 +33,28 @@ public class UserController {
 	public ModelAndView saveUser(@ModelAttribute("command") UserBean userBean, BindingResult result) {
 		User user = prepareModel(userBean);
 		userService.addUser(user);
-		return new ModelAndView("redirect:/loginform");
+		return new ModelAndView("redirect:/loginform.html");
+	}
+	
+	@RequestMapping(value = "/updateBalance", method = RequestMethod.POST)
+	public ModelAndView updateBalance(@ModelAttribute("command") UserBean userBean, BindingResult result, HttpSession sessionObj) {
+		//Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		User user = (User) sessionObj.getAttribute("user");
+		User user1 = userService.getUser(user.getUserId());
+		user1.getAccount().setBalance(100.0);
+
+		//if (principal instanceof User) {
+			//user1 = userService.getUser(((User) principal).getUserId());
+			//user.getAccount().setBalance(amount);
+		//}
+		userService.updateBalance(user1);
+		return new ModelAndView("redirect:/index.html");
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView showUpdateBalance() {
+		return new ModelAndView("updateBalance");
 	}
 	
 	@RequestMapping(value="/users", method = RequestMethod.GET)
@@ -68,7 +93,7 @@ public class UserController {
 	
 	private User prepareModel(UserBean userBean){
 		Account acc = new Account();
-		acc.setBalance(0);
+		acc.setBalance(0.0);
 		User user = new User();
 		user.setFirstName(userBean.getFirstName());
 		user.setLastName(userBean.getLastName());

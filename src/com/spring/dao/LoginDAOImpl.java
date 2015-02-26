@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.spring.model.User;
 
 @Repository("loginDAO")
-public class LoginDAOImpl implements LoginDAO {
+public class LoginDAOImpl implements LoginDAO {	
 
 	@Resource(name="sessionFactory")
 	protected SessionFactory sessionFactory;

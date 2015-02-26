@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import com.betfair.api.IMarketDataSource;
 import com.betfair.api.MarketDataWrapper;
 import com.betfair.dao.Persister;
@@ -17,24 +14,28 @@ import com.betfair.entities.MarketCatalogue;
 import com.betfair.entities.Runner;
 import com.betfair.entities.RunnerCatalogue;
 import com.betfair.exceptions.APINGException;
+import com.betfair.strategies.Context;
 import com.betfair.strategies.RaglanRoad;
 
 public class MainDriver {
 	private static RaglanRoad rg = null;
 	private List<MarketCatalogue> list = null;
 	private Persister persister = new Persister();
+	private static Context context;
 
 	public MainDriver() throws APINGException, ParseException{
 		IMarketDataSource marketDS = new MarketDataWrapper();
+		context = new Context(new RaglanRoad(marketDS));
 		rg = new RaglanRoad(marketDS);
 //		list = rg.getListMarketCatalogue();
 //
 //		printMarketCatalogue(list);
-		List<MarketBook> list2 = rg.getMarketPrices();
-		printMarketBook(list2);
+//		List<MarketBook> list2 = rg.getMarketPrices();
+//		printMarketBook(list2);
+		context.executeStrategy();
 //		rg.strategyCalculation();
-		list = persister.getAllUsers();
-		printMarketCatalogue(list);
+//		list = persister.getAllMarkets();
+//		printMarketCatalogue(list);
 	}
 
 	private void printMarketCatalogue(List<MarketCatalogue> mk){
@@ -59,9 +60,8 @@ public class MainDriver {
 	static class RunStrategyTimerTask extends TimerTask {
 		@Override
 		public void run(){
-			System.out.println(new Date());
 			try {
-				rg.strategyCalculation();
+				context.executeStrategy();
 			} catch (APINGException | ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -76,7 +76,8 @@ public class MainDriver {
 //		Timer timer = new Timer();
 //		Date date = new Date();
 //		date.setHours(13);
-//		date.setMinutes(18);
+//		date.setMinutes(00);
+//		timer.schedule(timerTask, date);
 //	    timer.scheduleAtFixedRate(timerTask, date, 5000);
 	}
 

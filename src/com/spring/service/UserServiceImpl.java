@@ -38,4 +38,9 @@ public class UserServiceImpl implements UserService {
 	public User getUser(int userId) {
 		return userDao.getUser(userId);
 	}
+
+	@Override
+	public void updateBalance(User user) {
+		userDao.updateBalance(user);
+	}
 }

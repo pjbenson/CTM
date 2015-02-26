@@ -26,7 +26,7 @@ import com.betfair.enums.PersistenceType;
 import com.betfair.enums.Side;
 import com.betfair.exceptions.APINGException;
 
-public class RaglanRoad {
+public class RaglanRoad implements IStrategy{
 	private static Double AMOUNT = 100.0;
 	private IMarketDataSource dataSource;
 	private Set<String> eventTypeIds = new HashSet<String>();
@@ -35,8 +35,9 @@ public class RaglanRoad {
 	private Set<String> typesCode = new HashSet<String>();
 	private TimeRange time = new TimeRange();
 	private Set<MarketProjection> marketProjection = new HashSet<MarketProjection>();
-	private Timer timer = new Timer(true);
 	private Persister persister;
+	private List<Double> prices = new ArrayList<Double>();
+	private List<Double> sizes = new ArrayList<Double>();
 
 	public RaglanRoad(IMarketDataSource marketData){
 		dataSource = marketData;
@@ -45,6 +46,10 @@ public class RaglanRoad {
 
 	public void strategyCalculation() throws APINGException, ParseException{
 		List<MarketBook> marketBooks = getMarketPrices();
+		if(marketBooks.isEmpty()){
+			System.out.print("No markets today"+new Date());
+			return;
+		}
 		List<PlaceInstruction> instructions = new ArrayList<PlaceInstruction>();
 		PlaceInstruction instruction1 = new PlaceInstruction();
 		PlaceInstruction instruction2 = new PlaceInstruction();
@@ -65,6 +70,10 @@ public class RaglanRoad {
 		double exp3;
 
 		for(MarketBook mb: marketBooks){
+			persister.persistRunner(mb.getRunners().get(0));
+			persister.persistRunner(mb.getRunners().get(1));
+			persister.persistRunner(mb.getRunners().get(2));
+			persister.persistMarketBook(mb);
 			price1 = mb.getRunners().get(0).getLastPriceTraded();
 			price2 = mb.getRunners().get(1).getLastPriceTraded();
 			price3 = mb.getRunners().get(2).getLastPriceTraded();
@@ -78,11 +87,16 @@ public class RaglanRoad {
 			exp1 = Math.round(ratio1*price1);
 			exp2 = Math.round(ratio2*price2);
 			exp3 = Math.round(ratio3*price3);
+			prices.add(price1);
+			prices.add(price2);
+			prices.add(price3);
+			sizes.add(ratio1);
+			sizes.add(ratio2);
+			sizes.add(ratio3);
 			System.out.print(price1+" "+price2+" "+price3+"\n");
 			System.out.print(ratio1+" "+ratio2+" "+ratio3+"\n");
 			System.out.print(exp1+" "+exp2+" "+exp3+"\n");
 			
-			//TODO: create for loop to create instructions 1, 2 and 3
 			instruction1.setSelectionId(mb.getRunners().get(0).getSelectionId());
 			instruction1.setSide(Side.BACK);
 			instruction1.setHandicap(0);
@@ -115,6 +129,8 @@ public class RaglanRoad {
 			limitOrder3.setPersistenceType(PersistenceType.LAPSE);
 			instruction3.setLimitOrder(limitOrder3);
 			instructions.add(instruction3);
+			
+			//persister.persistOrders(instructions, prices, sizes);
 
 			PlaceExecutionReport placeBetResult = dataSource.placeOrders(mb.getMarketId(), instructions);
 			
@@ -152,10 +168,10 @@ public class RaglanRoad {
 		marketFilter.setMarketCountries(countries);
 		marketFilter.setMarketTypeCodes(typesCode);
 		marketFilter.setEventTypeIds(eventTypeIds);
-		//marketFilter.setMarketStartTime(time);
+		marketFilter.setMarketStartTime(time);
 		marketProjection.add(MarketProjection.MARKET_START_TIME);
 		marketProjection.add(MarketProjection.RUNNER_DESCRIPTION);
-		String maxResults = "100";
+		String maxResults = "50";
 		List<MarketCatalogue> listMarketCatalogue = dataSource.listMarketCatalogue(marketFilter, marketProjection, maxResults);
 		List<MarketCatalogue> result = new ArrayList<MarketCatalogue>();
 	
@@ -165,6 +181,7 @@ public class RaglanRoad {
 				for(RunnerCatalogue rc: marketCatalogue.getRunners()){
 					persister.persistRunnerCatalogue(rc);
 				}
+				
 				persister.persistMarketCatalogue(marketCatalogue);
 			}
 		}
@@ -174,6 +191,11 @@ public class RaglanRoad {
 
 	public void setAMOUNT(Double amount) {
 		AMOUNT += amount;
+	}
+
+	@Override
+	public void execute() throws ParseException, APINGException {
+		strategyCalculation();
 	}
 
 }

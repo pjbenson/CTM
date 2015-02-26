@@ -32,7 +32,8 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	</bean>
 
 	<bean
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" id="sessionFactory">
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		id="sessionFactory">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="annotatedClasses">
 			<list>
@@ -49,7 +50,8 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 		</property>
 	</bean>
 
-	<bean class="org.springframework.orm.hibernate3.HibernateTransactionManager" id="hibernateTransactionManager">
+	<bean class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		id="hibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 </beans>

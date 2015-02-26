@@ -21,7 +21,7 @@ public class Account implements Serializable {
 	private Integer id;
 	
 	@Column(name = "BALANCE")
-	private Integer balance;
+	private Double balance;
 	
 	@OneToOne
     @PrimaryKeyJoinColumn
@@ -33,10 +33,10 @@ public class Account implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
-	public void setBalance(Integer balance) {
+	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
 	public User getUser() {

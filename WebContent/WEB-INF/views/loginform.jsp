@@ -27,19 +27,20 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<!-- Le styles -->
-<link href="../assets/css/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 body {
-	padding-top: 40px;
+	padding-top: 70px;
 	padding-bottom: 40px;
 	background-color: #f5f5f5;
+	background-image: url("race.gif");
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 .form-signin {
 	max-width: 300px;
 	padding: 19px 29px 29px;
-	margin: 0 auto 20px;
+	margin: 0 auto 100px;
 	background-color: #fff;
 	border: 1px solid #e5e5e5;
 	-webkit-border-radius: 5px;
@@ -61,23 +62,6 @@ body {
 	padding: 7px 9px;
 }
 </style>
-<link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
-
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
-
-<!-- Fav and touch icons -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144"
-	href="../assets/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114"
-	href="../assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72"
-	href="../assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed"
-	href="../assets/ico/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon" href="../assets/ico/favicon.png">
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -90,7 +74,7 @@ body {
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Catch the Monkey</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/index.html">Catch the Monkey</a>
 			</div>
 		</div>
 	</nav>
@@ -102,28 +86,9 @@ body {
 			<form:input path="userEmail"  class="input-block-level" placeholder="Email address"/>
 			<form:password path="userPassword" class="input-block-level" placeholder="Password" />
 			<input type="submit" value="Login" />
-
 		</form:form>
 
 	</div>
-	<!-- /container -->
-
-	<!-- Le javascript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="../assets/js/jquery.js"></script>
-	<script src="../assets/js/bootstrap-transition.js"></script>
-	<script src="../assets/js/bootstrap-alert.js"></script>
-	<script src="../assets/js/bootstrap-modal.js"></script>
-	<script src="../assets/js/bootstrap-dropdown.js"></script>
-	<script src="../assets/js/bootstrap-scrollspy.js"></script>
-	<script src="../assets/js/bootstrap-tab.js"></script>
-	<script src="../assets/js/bootstrap-tooltip.js"></script>
-	<script src="../assets/js/bootstrap-popover.js"></script>
-	<script src="../assets/js/bootstrap-button.js"></script>
-	<script src="../assets/js/bootstrap-collapse.js"></script>
-	<script src="../assets/js/bootstrap-carousel.js"></script>
-	<script src="../assets/js/bootstrap-typeahead.js"></script>
 
 </body>
 </html>

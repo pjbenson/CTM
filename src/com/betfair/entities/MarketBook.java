@@ -1,28 +1,57 @@
 package com.betfair.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name="Market_Book")
 public class MarketBook {
-	
+	@Id
+	@Column(name="MARKET_ID")
 	private String marketId;
+	@Transient
 	private Boolean isMarketDataDelayed;
+	@Transient
 	private String status;
+	@Transient
 	private int betDelay;
+	@Transient
 	private Boolean bspReconciled;
+	@Transient
 	private Boolean complete;
+	@Transient
 	private Boolean inplay;
+	@Transient
 	private int numberOfWinners;
+	@Transient
 	private int numberOfRunners;
+	@Transient
 	private int numberOfActiveRunners;
+	@Transient
 	private Date lastMatchTime;
+	@Transient
 	private Double totalMatched;
+	@Transient
 	private Double totalAvailable;
+	@Transient
 	private Boolean crossMatching;
+	@Transient
 	private Boolean runnersVoidable;
+	@Transient
 	private Long version;
-	
-	private List<Runner> runners;
+	@OneToMany
+	@JoinTable(name = "marketBook_runner", joinColumns = @JoinColumn(name = "market_id"), inverseJoinColumns = @JoinColumn(name = "runner_id"))
+	private List<Runner> runners = new ArrayList<Runner>();
 
 	public List<Runner> getRunners() {
 		return runners;
