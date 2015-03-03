@@ -47,7 +47,7 @@ public class LoginController {
 		if(currentUser != null){
 			model.put("user", currentUser);
 			sessionObj.setAttribute("user", currentUser);
-			return "loginsuccess";
+			return "profile";
 		}else{
 			result.rejectValue("userEmail","invaliduser");
 			return "loginform";

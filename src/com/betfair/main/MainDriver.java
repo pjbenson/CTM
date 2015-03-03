@@ -20,7 +20,6 @@ import com.betfair.strategies.RaglanRoad;
 public class MainDriver {
 	private static RaglanRoad rg = null;
 	private List<MarketCatalogue> list = null;
-	private Persister persister = new Persister();
 	private static Context context;
 
 	public MainDriver() throws APINGException, ParseException{
@@ -32,7 +31,7 @@ public class MainDriver {
 //		printMarketCatalogue(list);
 //		List<MarketBook> list2 = rg.getMarketPrices();
 //		printMarketBook(list2);
-		context.executeStrategy();
+//		context.executeStrategy();
 //		rg.strategyCalculation();
 //		list = persister.getAllMarkets();
 //		printMarketCatalogue(list);
@@ -72,13 +71,13 @@ public class MainDriver {
 
 	public static void main(String[] args) throws APINGException, InterruptedException, ParseException{
 		new MainDriver();
-//		TimerTask timerTask = new RunStrategyTimerTask();
-//		Timer timer = new Timer();
-//		Date date = new Date();
-//		date.setHours(13);
-//		date.setMinutes(00);
-//		timer.schedule(timerTask, date);
-//	    timer.scheduleAtFixedRate(timerTask, date, 5000);
+		TimerTask timerTask = new RunStrategyTimerTask();
+		Timer timer = new Timer();
+		Date date = new Date();
+		date.setHours(13);
+		date.setMinutes(00);
+		timer.schedule(timerTask, date);
+	    //timer.scheduleAtFixedRate(timerTask, date, 5000);
 	}
 
 }

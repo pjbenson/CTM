@@ -7,22 +7,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
 <!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<!-- Latest compiled and minified JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <title>Catch The Monkey</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/styles.css" rel="stylesheet">
+<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="txt/css">
+<link href="bootstrap/dist/css/styles.css" rel="stylesheet">
 <meta charset="utf-8">
-<title>Sign in &middot; Twitter Bootstrap</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -77,13 +68,9 @@ body {
 	</nav>
 
 	<div class="container">
-		<form:form method="POST" action="/CTM/updateBalance.html"
-			class="form-signin">
+		<form:form method="POST" commandName="account" class="form-signin">
 			<h2 class="form-signin-heading">Add Cash</h2>
-			<tr>
-				<td>To remember:</td>
-				<td><input name="amount" type="text"></td>
-			</tr>
+			<form:input path="balance"  class="input-block-level" placeholder="Amount"/>
 			<input type="submit" value="Add" />
 		</form:form>
 

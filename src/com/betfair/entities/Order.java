@@ -22,11 +22,11 @@ public class Order {
 	private String status;
 	@Transient
 	private String persistenceType;
-	@Column(name="SIDE")
+	@Column(name="ORDER_SIDE")
 	private String side;
-	@Column(name="PRICE")
+	@Column(name="ORDER_PRICE")
 	private Double price;
-	@Column(name="SIZE")
+	@Column(name="ORDER_SIZE")
 	private Double size;
 	@Transient
 	private Double bspLiability;

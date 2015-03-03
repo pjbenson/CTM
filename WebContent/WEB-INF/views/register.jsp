@@ -11,16 +11,13 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
 <!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <title>Catch The Monkey</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/styles.css" rel="stylesheet">
+
 <meta charset="utf-8">
 <title>Sign in &middot; Twitter Bootstrap</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +25,9 @@
 <meta name="author" content="">
 
 <!-- Le styles -->
-<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
 <style type="text/css">
 body {
 	padding-top: 70px;
@@ -61,7 +60,6 @@ body {
 	padding: 7px 9px;
 }
 </style>
-<link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
 
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -102,32 +100,14 @@ body {
 			<h2 class="form-signin-heading">Please Register</h2>
 			<form:input path="firstName" class="input-block-level" placeholder="First Name" value="${user.firstName}" />
 			<form:input path="lastName" class="input-block-level" placeholder="Last Name" value="${user.lastName}" />
-			<form:input path="email" class="input-block-level" placeholder="Email address" value="${user.email}" />
-			<form:input path="age" class="input-block-level" placeholder="Age" value="${user.age}" />
-			<form:input path="password" type="password" class="input-block-level" placeholder="Password" value="${user.password}" />
+			<form:input path="email" class="input-block-level" placeholder="Email address" value="${user.userEmail}" />
+			<form:input path="age" class="input-block-level" placeholder="Age" value="${user.userAge}" />
+			<form:input path="password" type="password" class="input-block-level" placeholder="Password" value="${user.userPassword}" />
 			<input type="submit" value="Register" />
 
 		</form:form>
 
 	</div>
-	<!-- /container -->
-
-	<!-- Le javascript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="../assets/js/jquery.js"></script>
-	<script src="../assets/js/bootstrap-transition.js"></script>
-	<script src="../assets/js/bootstrap-alert.js"></script>
-	<script src="../assets/js/bootstrap-modal.js"></script>
-	<script src="../assets/js/bootstrap-dropdown.js"></script>
-	<script src="../assets/js/bootstrap-scrollspy.js"></script>
-	<script src="../assets/js/bootstrap-tab.js"></script>
-	<script src="../assets/js/bootstrap-tooltip.js"></script>
-	<script src="../assets/js/bootstrap-popover.js"></script>
-	<script src="../assets/js/bootstrap-button.js"></script>
-	<script src="../assets/js/bootstrap-collapse.js"></script>
-	<script src="../assets/js/bootstrap-carousel.js"></script>
-	<script src="../assets/js/bootstrap-typeahead.js"></script>
 
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.betfair.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -58,9 +59,10 @@ public class Persister {
 		em.getTransaction().begin();
 		for(PlaceInstruction instruction: instructions){
 			order.setOrderType(instruction.getOrderType().toString());
-			order.setPrice(prices.get(0));
+			order.setPrice(prices.get(index));
 			order.setSide("BACK");
 			order.setSize(sizes.get(index));
+			order.setPlacedDate(new Date());
 			index++;
 			em.persist(order);
 			em.getTransaction().commit();

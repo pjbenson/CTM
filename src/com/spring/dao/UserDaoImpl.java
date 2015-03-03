@@ -3,10 +3,13 @@ package com.spring.dao;
 import java.util.List;
 
 
+
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.model.User;
 
@@ -43,8 +46,9 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void updateBalance(User user) {
-		sessionFactory.getCurrentSession().saveOrUpdate(user);
+		sessionFactory.getCurrentSession().update(user);
 	}
 
 }

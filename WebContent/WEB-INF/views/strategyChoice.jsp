@@ -12,7 +12,10 @@
 <meta name="author" content="">
 
 <!-- Le styles -->
-<link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet"
+	type="text/css">
+<link href="bootstrap/dist/css/carousel.css" rel="stylesheet"
+	type="text/css">
 <style type="text/css">
 body {
 	padding-top: 20px;
@@ -63,7 +66,6 @@ body {
 .navbar .navbar-inner {
 	padding: 0;
 }
-
 </style>
 <link href="bootstrap/docs/assets/css/bootstrap-responsive.css"
 	rel="stylesheet">
@@ -90,93 +92,97 @@ body {
 	<div class="container">
 
 		<div class="navbar-wrapper">
-      <div class="container">
+			<div class="container">
 
-        <nav class="navbar navbar-inverse navbar-static-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#">Catch The Monkey</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Nav header</li>
-                    <li><a href="#">Separated link</a></li>
-                    <li><a href="#">One more separated link</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+				<nav class="navbar navbar-inverse navbar-static-top">
+					<div class="container">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed"
+								data-toggle="collapse" data-target="#navbar"
+								aria-expanded="false" aria-controls="navbar">
+								<span class="sr-only">Toggle navigation</span> <span
+									class="icon-bar"></span> <span class="icon-bar"></span> <span
+									class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand" href="#">Catch The Monkey</a>
+						</div>
+						<div id="navbar" class="navbar-collapse collapse">
+							<ul class="nav navbar-nav">
+								<li class="active"><a href="#">Home</a></li>
+								<li><a href="#contact">Contact</a></li>
+							</ul>
+							</ul>
+						<c:if test="${not empty sessionScope.user}">
+							<ul class="nav navbar-nav navbar-right">
+								<li class="dropdown"><a class="dropdown-toggle"
+									role="button" data-toggle="dropdown"><i
+										class="glyphicon glyphicon-user"></i>
+										${sessionScope.user.firstName} <span class="caret"></span></a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="profile.html">My Profile</a></li>
+										<li><a href="updateBalance.html">Add Cash</a></li>
+									</ul></li>
+								<li><a href="#">Wallet: <i
+										class="glyphicon glyphicon-euro"></i>${sessionScope.user.account.balance}</a></li>
+								<li><a
+									href="${pageContext.request.contextPath}/logout.html"><i
+										class="glyphicon glyphicon-lock"></i>Logout</a></li>
+							</ul>
+						</c:if>
+						</div>
+					</div>
+				</nav>
 
-      </div>
-    </div>
+			</div>
+		</div>
 
 		<!-- Jumbotron -->
 		<div class="jumbotron">
-			<h1>Marketing stuff!</h1>
-			<p class="lead">Cras justo odio, dapibus ac facilisis in, egestas
-				eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-				condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-			<a class="btn btn-large btn-success" href="/CTM/strategies.html">Get started today</a>
+			<h1>Choose Strategy</h1>
+			<p class="lead">Select the strategy or strategies that you wish to sign up for. Once you have signed up you will be 
+			directed to the strategies main page. The main page will allow you to view the strategy's statistical information and 
+			invest as much capital as you wish.</p>
 		</div>
-
-		<hr>
 
 		<!-- Example row of columns -->
 		<div class="row-fluid">
 			<div class="span4">
-				<h2>Heading</h2>
+				<h2>Raglan Road</h2>
+				<p>Raglan road is a high risk/high reward strategy that parses and process very specific data 
+				obtained from the Betfair exchange and seeks to make profit through a range of high risk positions.</p>
+				<form:form method="POST" action="/CTM/strategy1.html">
+					<input type="submit" value="Register"
+						class="btn btn-large btn-success" />
+				</form:form>
+			</div>
+			<div class="span4">
+				<h2>Ginger Mc</h2>
 				<p>Donec id elit non mi porta gravida at eget metus. Fusce
 					dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
 					ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
 					magna mollis euismod. Donec sed odio dui.</p>
-				<p>
-					<a class="btn" href="#">View details &raquo;</a>
-				</p>
+				<form:form method="POST" action="/CTM/strategy2.html">
+					<input type="submit" value="Register"
+						class="btn btn-large btn-success" />
+				</form:form>
 			</div>
 			<div class="span4">
-				<h2>Heading</h2>
-				<p>Donec id elit non mi porta gravida at eget metus. Fusce
-					dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
-					ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-					magna mollis euismod. Donec sed odio dui.</p>
-				<p>
-					<a class="btn" href="#">View details &raquo;</a>
-				</p>
-			</div>
-			<div class="span4">
-				<h2>Heading</h2>
+				<h2>A N Another</h2>
 				<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in,
 					egestas eget quam. Vestibulum id ligula porta felis euismod semper.
 					Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
 					nibh, ut fermentum massa.</p>
-				<p>
-					<a class="btn" href="#">View details &raquo;</a>
-				</p>
+				<form:form method="POST" action="/CTM/strategy3.html">
+					<input type="submit" value="Register"
+						class="btn btn-large btn-success" />
+				</form:form>
 			</div>
 		</div>
 
 		<hr>
 
 		<div class="footer">
-			<p>&copy; Company 2013</p>
+			<p>&copy; Paul Benson</p>
 		</div>
 
 	</div>
