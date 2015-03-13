@@ -31,6 +31,15 @@ public class Account implements Serializable {
 	@Column(name = "BALANCE")
 	private Double balance;
 	
+	@Column(name = "raglanroad")
+	private Double raglanroad;
+	
+	@Column(name="gingermc")
+	private Double gingermc;
+	
+	@Column(name="lucayan")
+	private Double lucayan;
+	
 	@OneToOne
     @PrimaryKeyJoinColumn
 	private User user;
@@ -67,5 +76,29 @@ public class Account implements Serializable {
 		if (!strategies.contains(strategy)) {
 			strategies.add(strategy);
 		}
+	}
+	public Double getRaglanroad() {
+		return raglanroad;
+	}
+	public void addToRaglanroad(Double raglanroad) {
+		if(this.raglanroad == null)
+			this.raglanroad = 0.0;
+		this.raglanroad = this.raglanroad + raglanroad;
+	}
+	public Double getGingermc() {
+		return gingermc;
+	}
+	public void addToGingermc(Double gingermc) {
+		if(this.gingermc == null)
+			this.gingermc = 0.0;
+		this.gingermc = this.gingermc + gingermc;
+	}
+	public Double getLucayan() {
+		return lucayan;
+	}
+	public void addToLucayan(Double lucayan) {
+		if(this.lucayan == null)
+			this.lucayan = 0.0;
+		this.lucayan = this.lucayan + lucayan;
 	}
 }

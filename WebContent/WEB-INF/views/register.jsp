@@ -89,7 +89,7 @@ body {
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Catch the Monkey</a>
+				<a class="navbar-brand" href="index.html">Catch the Monkey</a>
 			</div>
 		</div>
 	</nav>
@@ -103,7 +103,7 @@ body {
 			<form:input path="email" class="input-block-level" placeholder="Email address" value="${user.userEmail}" />
 			<form:input path="age" class="input-block-level" placeholder="Age" value="${user.userAge}" />
 			<form:input path="password" type="password" class="input-block-level" placeholder="Password" value="${user.userPassword}" />
-			<input type="submit" value="Register" />
+			<input type="submit" value="Register" class="btn btn-large btn-success"/>
 
 		</form:form>
 

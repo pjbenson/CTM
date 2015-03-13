@@ -6,16 +6,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
 
 import com.betfair.api.IMarketDataSource;
-import com.betfair.dao.Persister;
+import com.betfair.dao.MarketDataPersister;
 import com.betfair.entities.LimitOrder;
 import com.betfair.entities.MarketBook;
 import com.betfair.entities.MarketCatalogue;
 import com.betfair.entities.MarketFilter;
+import com.betfair.entities.Order;
 import com.betfair.entities.PlaceExecutionReport;
 import com.betfair.entities.PlaceInstruction;
+import com.betfair.entities.Runner;
 import com.betfair.entities.RunnerCatalogue;
 import com.betfair.entities.TimeRange;
 import com.betfair.enums.ExecutionReportStatus;
@@ -27,7 +28,7 @@ import com.betfair.enums.Side;
 import com.betfair.exceptions.APINGException;
 
 public class RaglanRoad implements IStrategy{
-	private static Double AMOUNT = 100.0;
+	private Double pool = 100.0;
 	private IMarketDataSource dataSource;
 	private Set<String> eventTypeIds = new HashSet<String>();
 	private MarketFilter marketFilter = new MarketFilter();
@@ -35,13 +36,12 @@ public class RaglanRoad implements IStrategy{
 	private Set<String> typesCode = new HashSet<String>();
 	private TimeRange time = new TimeRange();
 	private Set<MarketProjection> marketProjection = new HashSet<MarketProjection>();
-	private Persister persister;
-	private List<Double> prices = new ArrayList<Double>();
-	private List<Double> sizes = new ArrayList<Double>();
+	private MarketDataPersister persister;
+	private List<Runner> runners;
 
 	public RaglanRoad(IMarketDataSource marketData){
 		dataSource = marketData;
-		persister = new Persister();
+		persister = new MarketDataPersister();
 	}
 
 	public void strategyCalculation() throws APINGException, ParseException{
@@ -55,25 +55,13 @@ public class RaglanRoad implements IStrategy{
 		PlaceInstruction instruction2 = new PlaceInstruction();
 		PlaceInstruction instruction3 = new PlaceInstruction();
 
-		double price1;
-		double price2;
-		double price3;
-		double a;
-		double b;
-		double c;
+		double price1, price2, price3;
+		double a,b,c;
 		double total;
-		double ratio1;
-		double ratio2;
-		double ratio3;
-		double exp1;
-		double exp2;
-		double exp3;
+		double ratio1, ratio2,ratio3;
+		double exp1, exp2, exp3;
 
 		for(MarketBook mb: marketBooks){
-			persister.persistRunner(mb.getRunners().get(0));
-			persister.persistRunner(mb.getRunners().get(1));
-			persister.persistRunner(mb.getRunners().get(2));
-			persister.persistMarketBook(mb);
 			price1 = mb.getRunners().get(0).getLastPriceTraded();
 			price2 = mb.getRunners().get(1).getLastPriceTraded();
 			price3 = mb.getRunners().get(2).getLastPriceTraded();
@@ -81,18 +69,12 @@ public class RaglanRoad implements IStrategy{
 			b = price1*price3;
 			c = price1*price2;
 			total = a+b+c;
-			ratio1 = Math.round((a/total)*AMOUNT);
-			ratio2 = Math.round((b/total)*AMOUNT);
-			ratio3 = Math.round((c/total)*AMOUNT);
-			exp1 = Math.round(ratio1*price1);
-			exp2 = Math.round(ratio2*price2);
-			exp3 = Math.round(ratio3*price3);
-			prices.add(price1);
-			prices.add(price2);
-			prices.add(price3);
-			sizes.add(ratio1);
-			sizes.add(ratio2);
-			sizes.add(ratio3);
+			ratio1 = Math.round((a/total)*pool);
+			ratio2 = Math.round((b/total)*pool);
+			ratio3 = Math.round((c/total)*pool);
+			exp1 = Math.round(ratio1*price1-pool);
+			exp2 = Math.round(ratio2*price2-pool);
+			exp3 = Math.round(ratio3*price3-pool);
 			System.out.print(price1+" "+price2+" "+price3+"\n");
 			System.out.print(ratio1+" "+ratio2+" "+ratio3+"\n");
 			System.out.print(exp1+" "+exp2+" "+exp3+"\n");
@@ -130,7 +112,23 @@ public class RaglanRoad implements IStrategy{
 			instruction3.setLimitOrder(limitOrder3);
 			instructions.add(instruction3);
 			
-			//persister.persistOrders(instructions, prices, sizes);
+			Order o1 = getOrder(instructions.get(0), price1, ratio1, exp1);
+			persister.persistOrder(o1);
+			Order o2 = getOrder(instructions.get(1), price2, ratio2, exp2);
+			persister.persistOrder(o2);
+			Order o3 = getOrder(instructions.get(2), price3, ratio3, exp3);
+			persister.persistOrder(o3);
+			runners = getRunners(mb);
+			Runner r1 = runners.get(0);
+			r1.addOrder(o1);
+			persister.persistRunner(r1);
+			Runner r2 = runners.get(1);
+			r2.addOrder(o2);
+			persister.persistRunner(r2);
+			Runner r3 = runners.get(2);
+			r3.addOrder(o3);
+			persister.persistRunner(r3);
+			persister.persistMarketBook(mb);
 
 			PlaceExecutionReport placeBetResult = dataSource.placeOrders(mb.getMarketId(), instructions);
 			
@@ -142,6 +140,25 @@ public class RaglanRoad implements IStrategy{
                 System.out.println("The error is: " + placeBetResult.getErrorCode() + ": " + placeBetResult.getErrorCode().getMessage());
             }
 		}
+	}
+	
+	public List<Runner> getRunners(MarketBook marketBook){
+		List<Runner> runners = new ArrayList<Runner>(); 
+		for(Runner runner: marketBook.getRunners()){
+			runners.add(runner);
+		}
+		return runners;
+	}
+	
+	public Order getOrder(PlaceInstruction instruction, Double price, Double size, Double expReturn){
+		Order order = new Order();
+		order.setPrice(price);
+		order.setSide("BACK");
+		order.setSize(size);
+		order.setExp_winnigs(expReturn);
+		order.setOrderType(instruction.getOrderType().toString());
+		order.setPlacedDate(new Date());
+		return order;
 	}
 	
 	public List<MarketBook> getMarketPrices() throws APINGException, ParseException{
@@ -178,10 +195,9 @@ public class RaglanRoad implements IStrategy{
 		for(MarketCatalogue marketCatalogue: listMarketCatalogue){
 			if(marketCatalogue.getMarketName().contains("Mdn") && marketCatalogue.getMarketName().contains("Hrd")){
 				result.add(marketCatalogue);
-				for(RunnerCatalogue rc: marketCatalogue.getRunners()){
-					persister.persistRunnerCatalogue(rc);
-				}
-				
+				persister.persistRunnerCatalogue(marketCatalogue.getRunners().get(0));
+				persister.persistRunnerCatalogue(marketCatalogue.getRunners().get(1));
+				persister.persistRunnerCatalogue(marketCatalogue.getRunners().get(2));
 				persister.persistMarketCatalogue(marketCatalogue);
 			}
 		}
@@ -189,8 +205,12 @@ public class RaglanRoad implements IStrategy{
 		return result;
 	}
 
-	public void setAMOUNT(Double amount) {
-		AMOUNT += amount;
+	public Double getPool() {
+		return pool;
+	}
+
+	public void addToPool(Double pool) {
+		this.pool = this.pool + pool;
 	}
 
 	@Override

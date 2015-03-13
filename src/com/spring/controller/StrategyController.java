@@ -1,5 +1,7 @@
 package com.spring.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,35 +14,70 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
+import static com.googlecode.charts4j.Color.RED;
+
+import com.betfair.entities.MarketCatalogue;
+import com.betfair.entities.Order;
+import com.betfair.entities.Runner;
+import com.googlecode.charts4j.AxisLabelsFactory;
+import com.googlecode.charts4j.Color;
+import com.googlecode.charts4j.Data;
+import com.googlecode.charts4j.GCharts;
+import com.googlecode.charts4j.Line;
+import com.googlecode.charts4j.LineChart;
+import com.googlecode.charts4j.LineStyle;
+import com.googlecode.charts4j.PieChart;
+import com.googlecode.charts4j.Plots;
+import com.googlecode.charts4j.Slice;
 import com.spring.model.Account;
 import com.spring.model.Strategy;
 import com.spring.model.User;
 import com.spring.service.AccountService;
+import com.spring.service.MarketCatalogueService;
+import com.spring.service.OrderService;
+import com.spring.service.RunnerService;
 import com.spring.service.StrategyService;
 import com.spring.service.UserService;
 
 @Controller
-@SessionAttributes("strategy")
+@SessionAttributes({"strategy","order", "runner"})
 public class StrategyController {
-
+	
+	@Autowired
+	private RunnerService runnerService;
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private StrategyService strategyService;
-
-	@Autowired
-	private UserService userService;
-
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private MarketCatalogueService marketCatalogueService;
 
 	@RequestMapping(value="strategyChoice", method = RequestMethod.GET)
 	public ModelAndView showStrategy(ModelMap model) {
-		Strategy strategy = new Strategy();
-		model.addAttribute("strategy", strategy);
-		return new ModelAndView("strategyChoice");
+		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
+		if(user == null){
+			return new ModelAndView("strategyChoice");
+		}
+		else{
+			Account acc = accountService.getAccount(user.getAccount().getId());
+			Strategy strategy = new Strategy();
+			if(acc.getStrategies().isEmpty()){
+				model.addAttribute("strategy", strategy);
+				return new ModelAndView("strategyChoice");
+			}
+			else{
+				for(Strategy strat: acc.getStrategies()){
+					model.put("strategy", strat);
+				}
+				return new ModelAndView("strategyChoice");
+			}
+		}
 	}
 
 	@RequestMapping(value = "/strategy1", method = RequestMethod.POST)
-	public ModelAndView chooseStrategy1(@ModelAttribute("strategy") Strategy strategy, BindingResult result) {
+	public ModelAndView chooseStrategy1(@ModelAttribute("strategy") Strategy strategy, ModelMap model) {
 		ModelAndView modelAndView = new ModelAndView();
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		Account acc = accountService.getAccount(user.getAccount().getId());
@@ -49,8 +86,9 @@ public class StrategyController {
 		strat.addAccount(acc);
 		accountService.addStrategyToAccount(acc);
 		strategyService.addAccountToStrategy(strat);
+		model.put("raglanroad", strategy);
 		modelAndView.addObject("strategy", strat);
-		return new ModelAndView("redirect:/index.html");
+		return new ModelAndView("redirect:/raglanroad.html");
 
 	}
 
@@ -77,5 +115,4 @@ public class StrategyController {
 		strategyService.addAccountToStrategy(strat);
 		return new ModelAndView("redirect:/index.html");
 	}
-
 }

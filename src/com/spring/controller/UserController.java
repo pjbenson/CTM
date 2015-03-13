@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,19 +12,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.bean.AccountBean;
 import com.spring.bean.UserBean;
 import com.spring.model.Account;
-import com.spring.model.Strategy;
 import com.spring.model.User;
 import com.spring.service.UserService;
 
 @Controller
+@SessionAttributes({"user", "account", "strategy"})
 public class UserController {
 
 	@Autowired
@@ -34,13 +31,33 @@ public class UserController {
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute("command") UserBean userBean, BindingResult result) {
+		boolean found = false;
+		List<User> users = userService.userList();
 		User user = prepareModel(userBean);
-		userService.addUser(user);
-		return new ModelAndView("redirect:/loginform.html");
+		for(User u: users){
+			if(u.getUserEmail().equals(user.getUserEmail())){
+				found = true;
+			}
+		}
+		if(found){
+			return new ModelAndView("redirect:/register.html");
+		}
+		else{
+			userService.addUser(user);
+			return new ModelAndView("redirect:/loginform.html");
+		}
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView showProfile() {
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public ModelAndView showProfile(ModelMap model) {
+		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
+		Double raglanRoad = user.getAccount().getRaglanroad();
+		Double gingermc = user.getAccount().getGingermc();
+		Double lucayan = user.getAccount().getLucayan();
+		model.addAttribute("raglanroad", raglanRoad);
+		model.addAttribute("gingermc", gingermc);
+		model.addAttribute("lucayan", lucayan);
+		
 		return new ModelAndView("profile");
 	}
 	
@@ -68,7 +85,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public ModelAndView addUser(@ModelAttribute("command")  UserBean userBean, BindingResult result) {
+	public ModelAndView addUser(@ModelAttribute("command")  UserBean userBean) {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("users",  prepareListofBean(userService.userList()));
 		return new ModelAndView("register", model);

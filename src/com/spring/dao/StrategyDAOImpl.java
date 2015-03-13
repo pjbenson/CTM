@@ -15,7 +15,6 @@ public class StrategyDAOImpl implements StrategyDAO {
 
 	@Override
 	public Strategy getStrategyById(int id) {
-		// TODO Auto-generated method stub
 		return (Strategy) sessionFactory.getCurrentSession().get(Strategy.class, id);
 	}
 

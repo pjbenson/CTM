@@ -3,8 +3,11 @@ package com.spring.model;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.engine.Cascade;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @SuppressWarnings("serial")
 @Entity
@@ -23,9 +26,11 @@ public class User implements Serializable{
 	private String lastName;
 	
 	@Column(name="USER_EMAIL")
+	@NotEmpty @Email
 	private String userEmail;
 	
 	@Column(name="USER_PASSWORD")
+	@NotNull
 	private String userPassword;
 	
 	@Column(name="USER_AGE")

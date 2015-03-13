@@ -24,4 +24,10 @@ public class AccountDAOImpl implements AccountDAO {
 		sessionFactory.getCurrentSession().update(acc);
 	}
 
+	@Override
+	@Transactional(readOnly = false)
+	public void updateAccount(Account acc) {
+		sessionFactory.getCurrentSession().update(acc);
+	}
+
 }

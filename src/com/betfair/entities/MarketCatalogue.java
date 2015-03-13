@@ -1,5 +1,6 @@
 package com.betfair.entities;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -16,21 +18,22 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@SuppressWarnings("serial")
 @NamedQueries({		
 	@NamedQuery(name = "Market.findById", query = "select o from MarketCatalogue o where o.marketId=:a"),
 	@NamedQuery(name = "Market.findAll", query = "select o from MarketCatalogue o")
 })
+
 @Entity
 @Table(name="Market_Catalogue")
-public class MarketCatalogue implements java.io.Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class MarketCatalogue implements Serializable{
+	
 	@Id
 	@Column(name="MARKET_ID")
 	private String marketId;
 	@Column(name="MARKET_NAME")
 	private String marketName;
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "market_runner", joinColumns = @JoinColumn(name = "market_catalogue_market_id"), inverseJoinColumns = @JoinColumn(name = "runner_catalogue_selection_id"))
 	private List<RunnerCatalogue> runners = new ArrayList<RunnerCatalogue>();
 	@Column(name="MARKET_START_NAME")

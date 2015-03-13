@@ -104,31 +104,30 @@ body {
 									class="icon-bar"></span> <span class="icon-bar"></span> <span
 									class="icon-bar"></span>
 							</button>
-							<a class="navbar-brand" href="#">Catch The Monkey</a>
+							<a class="navbar-brand">Catch The Monkey</a>
 						</div>
 						<div id="navbar" class="navbar-collapse collapse">
 							<ul class="nav navbar-nav">
-								<li class="active"><a href="#">Home</a></li>
+								<li><a href="index.html">Home</a></li>
 								<li><a href="#contact">Contact</a></li>
 							</ul>
-							</ul>
-						<c:if test="${not empty sessionScope.user}">
-							<ul class="nav navbar-nav navbar-right">
-								<li class="dropdown"><a class="dropdown-toggle"
-									role="button" data-toggle="dropdown"><i
-										class="glyphicon glyphicon-user"></i>
-										${sessionScope.user.firstName} <span class="caret"></span></a>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="profile.html">My Profile</a></li>
-										<li><a href="updateBalance.html">Add Cash</a></li>
-									</ul></li>
-								<li><a href="#">Wallet: <i
-										class="glyphicon glyphicon-euro"></i>${sessionScope.user.account.balance}</a></li>
-								<li><a
-									href="${pageContext.request.contextPath}/logout.html"><i
-										class="glyphicon glyphicon-lock"></i>Logout</a></li>
-							</ul>
-						</c:if>
+							<c:if test="${not empty sessionScope.user.firstName}">
+								<ul class="nav navbar-nav navbar-right">
+									<li class="dropdown"><a class="dropdown-toggle"
+										role="button" data-toggle="dropdown"><i
+											class="glyphicon glyphicon-user"></i>
+											${sessionScope.user.firstName} <span class="caret"></span></a>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="profile.html">My Profile</a></li>
+											<li><a href="updateBalance.html">Add Cash</a></li>
+										</ul></li>
+									<li><a href="#">Wallet: <i
+											class="glyphicon glyphicon-euro"></i>${sessionScope.user.account.balance}</a></li>
+									<li><a
+										href="${pageContext.request.contextPath}/logout.html"><i
+											class="glyphicon glyphicon-lock"></i>Logout</a></li>
+								</ul>
+							</c:if>
 						</div>
 					</div>
 				</nav>
@@ -139,21 +138,32 @@ body {
 		<!-- Jumbotron -->
 		<div class="jumbotron">
 			<h1>Choose Strategy</h1>
-			<p class="lead">Select the strategy or strategies that you wish to sign up for. Once you have signed up you will be 
-			directed to the strategies main page. The main page will allow you to view the strategy's statistical information and 
-			invest as much capital as you wish.</p>
+			<p class="lead">Select the strategy or strategies that you wish
+				to sign up for. Once you have signed up you will be directed to the
+				strategies main page. The main page will allow you to view the
+				strategy's statistical information and invest as much capital as you
+				wish.</p>
+			<c:if test="${empty sessionScope.user}">
+				<p>
+					<a class="btn btn-lg btn-primary" href="register.html"
+						role="button">Register today</a>
+				</p>
+			</c:if>
 		</div>
 
 		<!-- Example row of columns -->
 		<div class="row-fluid">
 			<div class="span4">
 				<h2>Raglan Road</h2>
-				<p>Raglan road is a high risk/high reward strategy that parses and process very specific data 
-				obtained from the Betfair exchange and seeks to make profit through a range of high risk positions.</p>
-				<form:form method="POST" action="/CTM/strategy1.html">
-					<input type="submit" value="Register"
-						class="btn btn-large btn-success" />
-				</form:form>
+				<p>Raglan road is a high risk/high reward strategy that parses
+					and process very specific data obtained from the Betfair exchange
+					and seeks to make profit through a range of high risk positions.</p>
+				<c:if test="${not empty sessionScope.user}">
+					<form:form method="POST" action="/CTM/strategy1.html">
+						<input type="submit" value="Register"
+							class="btn btn-large btn-success" />
+					</form:form>
+				</c:if>
 			</div>
 			<div class="span4">
 				<h2>Ginger Mc</h2>
@@ -161,10 +171,12 @@ body {
 					dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
 					ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
 					magna mollis euismod. Donec sed odio dui.</p>
-				<form:form method="POST" action="/CTM/strategy2.html">
-					<input type="submit" value="Register"
-						class="btn btn-large btn-success" />
-				</form:form>
+				<c:if test="${not empty sessionScope.user}">
+					<form:form method="POST" action="/CTM/strategy2.html">
+						<input type="submit" value="Register"
+							class="btn btn-large btn-success" />
+					</form:form>
+				</c:if>
 			</div>
 			<div class="span4">
 				<h2>A N Another</h2>
@@ -172,10 +184,12 @@ body {
 					egestas eget quam. Vestibulum id ligula porta felis euismod semper.
 					Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
 					nibh, ut fermentum massa.</p>
-				<form:form method="POST" action="/CTM/strategy3.html">
-					<input type="submit" value="Register"
-						class="btn btn-large btn-success" />
-				</form:form>
+				<c:if test="${not empty sessionScope.user}">
+					<form:form method="POST" action="/CTM/strategy3.html">
+						<input type="submit" value="Register"
+							class="btn btn-large btn-success" />
+					</form:form>
+				</c:if>
 			</div>
 		</div>
 

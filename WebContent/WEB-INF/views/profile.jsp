@@ -38,9 +38,11 @@ footer {
 	background-color: #efefef;
 }
 
-.container{width: 0 auto;
-margin: 0 auto;
-margin-left: 250px;}
+.container {
+	width: 0 auto;
+	margin: 0 auto;
+	margin-left: 250px;
+}
 
 /* count indicator near icons */
 .nav>li .count {
@@ -85,12 +87,11 @@ margin-left: 250px;}
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Catch The Monkey</a>
+						<a class="navbar-brand" href="index.html">Catch The Monkey</a>
 					</div>
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="#">Home</a></li>
-							<li><a href="loginform.html">Login</a></li>
+							<li class="active"><a href="index.html">Home</a></li>
 							<li><a href="#contact">Contact</a></li>
 							<li class="dropdown"><a href="#" class="dropdown-toggle"
 								data-toggle="dropdown" role="button" aria-expanded="false">Options
@@ -121,8 +122,7 @@ margin-left: 250px;}
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-xs-12 col-sm-4 text-center">
-								<img src="http://api.randomuser.me/portraits/women/21.jpg"
-									alt=""
+								<img src="bootstrap/img/photo.jpg" alt=""
 									class="center-block img-circle img-thumbnail img-responsive">
 								<ul class="list-inline ratings text-center" title="Ratings">
 									<li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
@@ -134,7 +134,8 @@ margin-left: 250px;}
 							</div>
 							<!--/col-->
 							<div class="col-xs-12 col-sm-8">
-								<h2>${sessionScope.user.firstName}</h2>
+								<h2>${sessionScope.user.firstName}
+									${sessionScope.user.lastName}</h2>
 								<p>
 									<strong>Email: </strong> ${sessionScope.user.userEmail}
 								</p>
@@ -142,40 +143,45 @@ margin-left: 250px;}
 									<strong>Age: </strong> ${sessionScope.user.userAge}
 								</p>
 								<p>
-									<strong>Wallet: </strong><i class="glyphicon glyphicon-euro"></i> ${sessionScope.user.account.balance}
+									<strong>Wallet: </strong><i class="glyphicon glyphicon-euro"></i>
+									${sessionScope.user.account.balance}
 								</p>
 								<p>
-									<strong>Strategies: </strong>
+									<strong>Strategies: ${sessionScope.strategy.name}</strong>
 								</p>
 							</div>
 							<!--/col-->
 							<div class="clearfix"></div>
-							<div class="col-xs-12 col-sm-4">
-								<h2>
-									<strong><i class="glyphicon glyphicon-euro"></i>10 </strong>
-								</h2>
-								<button class="btn btn-success btn-block">
-									<span class="fa fa-plus-circle"></span> Raglan Road
-								</button>
-							</div>
+							<c:if test="${not empty raglanroad}">
+								<div class="col-xs-12 col-sm-4">
+									<h2>
+										<strong><i class="glyphicon glyphicon-euro"></i>${raglanroad}
+										</strong>
+									</h2>
+									<a class="btn btn-success btn-block" href="raglanroad.html"
+										role="button">Raglan Road</a>
+								</div>
+							</c:if>
 							<!--/col-->
-							<div class="col-xs-12 col-sm-4">
-								<h2>
-									<strong><i class="glyphicon glyphicon-euro"></i>100</strong>
-								</h2>
-								<button class="btn btn-info btn-block">
-									<span class="fa fa-user"></span> Ginger Mc
-								</button>
-							</div>
+							<c:if test="${not empty gingermc}">
+								<div class="col-xs-12 col-sm-4">
+									<h2>
+										<strong><i class="glyphicon glyphicon-euro"></i>${gingermc}</strong>
+									</h2>
+									<a class="btn btn-info btn-block" href="raglanroad.html"
+										role="button">Ginger Mc</a>
+								</div>
+							</c:if>
 							<!--/col-->
-							<div class="col-xs-12 col-sm-4">
-								<h2>
-									<strong><i class="glyphicon glyphicon-euro"></i>25</strong>
-								</h2>
-								<button type="button" class="btn btn-primary btn-block">
-									<span class="fa fa-gear"></span> A N Another
-								</button>
-							</div>
+							<c:if test="${not empty lucayan}">
+								<div class="col-xs-12 col-sm-4">
+									<h2>
+										<strong><i class="glyphicon glyphicon-euro"></i>${lucayan}</strong>
+									</h2>
+									<a class="btn btn-primary btn-block" href="raglanroad.html"
+										role="button">Lucayan</a>
+								</div>
+							</c:if>
 							<!--/col-->
 						</div>
 						<!--/row-->

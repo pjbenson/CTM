@@ -22,44 +22,6 @@
 <link href="bootstrap/dist/css/carousel.css" rel="stylesheet"
 	type="text/css">
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-	google.load('visualization', '1.1', {
-		packages : [ 'line' ]
-	});
-	google.setOnLoadCallback(drawChart);
-
-	function drawChart() {
-
-		var data = new google.visualization.DataTable();
-		data.addColumn('number', 'Days');
-		data.addColumn('number', 'Strategy 1');
-		data.addColumn('number', 'Strategy 2');
-		data.addColumn('number', 'Strategy 3');
-
-		data.addRows([ [ 1, 37.8, 80.8, 41.8 ], [ 2, 30.9, 69.5, 32.4 ],
-				[ 3, 25.4, 57, 25.7 ], [ 4, 11.7, 18.8, 10.5 ],
-				[ 5, 11.9, 17.6, 10.4 ], [ 6, 8.8, 13.6, 7.7 ],
-				[ 7, 7.6, 12.3, 9.6 ], [ 8, 12.3, 29.2, 10.6 ],
-				[ 9, 16.9, 42.9, 14.8 ], [ 10, 12.8, 30.9, 11.6 ],
-				[ 11, 5.3, 7.9, 4.7 ], [ 12, 6.6, 8.4, 5.2 ],
-				[ 13, 4.8, 6.3, 3.6 ], [ 14, 4.2, 6.2, 3.4 ] ]);
-
-		var options = {
-			chart : {
-				title : 'Strategy Performance',
-				subtitle : 'return per 100 Euro'
-			},
-			width : 900,
-			height : 500
-		};
-
-		var chart = new google.charts.Line(document
-				.getElementById('linechart_material'));
-
-		chart.draw(data, options);
-	}
-</script>
 </head>
 <!-- NAVBAR
 ================================================== -->
@@ -82,17 +44,17 @@
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
 							<li class="active"><a href="#">Home</a></li>
-							<c:if test="${empty sessionScope.user}">
+							<c:if test="${empty sessionScope.user.firstName}">
 								<li><a href="loginform.html">Login</a></li>
 							</c:if>
 							<li><a href="#contact">Contact</a></li>
-							<c:if test="${empty sessionScope.user}">
+							<c:if test="${empty sessionScope.user.firstName}">
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
 									data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
 										<span class="caret"></span>
 								</a>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">Action</a></li>
+										<li><a href="raglanroad.html">Action</a></li>
 										<li><a href="#">Another action</a></li>
 										<li><a href="#">Something else here</a></li>
 										<li class="divider"></li>
@@ -102,7 +64,7 @@
 									</ul></li>
 							</c:if>
 						</ul>
-						<c:if test="${not empty sessionScope.user}">
+						<c:if test="${not empty sessionScope.user.firstName}">
 							<ul class="nav navbar-nav navbar-right">
 								<li class="dropdown"><a class="dropdown-toggle"
 									role="button" data-toggle="dropdown"><i
@@ -147,8 +109,7 @@
 							to generate profit through different means via the Betfair
 							exchange.</p>
 						<p>
-							<a class="btn btn-lg btn-primary" href="register.html"
-								role="button">Sign up today</a>
+							<a class="btn btn-lg btn-primary" href="register.html" role="button">Sign up today</a>
 						</p>
 					</div>
 				</div>
@@ -205,48 +166,44 @@
 		<div class="row">
 			<div class="col-lg-4">
 				<img class="img-circle"
-					src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+					src="bootstrap/img/raglanroad.jpg"
 					alt="Generic placeholder image"
 					style="width: 140px; height: 140px;">
 				<h2>Raglan Road</h2>
-				<p>Donec sed odio dui. Etiam porta sem malesuada magna mollis
-					euismod. Nullam id dolor id nibh ultricies vehicula ut id elit.
-					Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-					Praesent commodo cursus magna.</p>
+				<p>Raglan Road is high risk strategy that seeks 
+				to generate profit by executing trades automatically
+				via Betfair.</p>
 				<p>
-					<a class="btn btn-default" href="#" role="button">View details
+					<a class="btn btn-default" href="strategyChoice.html" role="button">View details
 						&raquo;</a>
 				</p>
 			</div>
 			<!-- /.col-lg-4 -->
 			<div class="col-lg-4">
 				<img class="img-circle"
-					src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+					src="bootstrap/img/ginger.jpg"
 					alt="Generic placeholder image"
 					style="width: 140px; height: 140px;">
 				<h2>Ginger Mc</h2>
-				<p>Duis mollis, est non commodo luctus, nisi erat porttitor
-					ligula, eget lacinia odio sem nec elit. Cras mattis consectetur
-					purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo,
-					tortor mauris condimentum nibh.</p>
+				<p>Ginger Mc is a medium risk strategy and is seeks to 
+				generate profit through more conservative trades than
+				Raglan Road.</p>
 				<p>
-					<a class="btn btn-default" href="#" role="button">View details
+					<a class="btn btn-default" href="strategyChoice.html" role="button">View details
 						&raquo;</a>
 				</p>
 			</div>
 			<!-- /.col-lg-4 -->
 			<div class="col-lg-4">
 				<img class="img-circle"
-					src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+					src="bootstrap/img/lucayan.png"
 					alt="Generic placeholder image"
 					style="width: 140px; height: 140px;">
-				<h2>A N Another</h2>
-				<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in,
-					egestas eget quam. Vestibulum id ligula porta felis euismod semper.
-					Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
-					nibh, ut fermentum massa justo sit amet risus.</p>
+				<h2>Lucayan</h2>
+				<p>Lucayan is our lowest risk strategy. All trades are catious in 
+				nature and there are many hedging techniques applied to offset risk.</p>
 				<p>
-					<a class="btn btn-default" href="#" role="button">View details
+					<a class="btn btn-default" href="strategyChoice.html" role="button">View details
 						&raquo;</a>
 				</p>
 			</div>
@@ -257,18 +214,16 @@
 		<div class="row featurette">
 			<div class="col-md-7">
 				<h2 class="featurette-heading">
-					First featurette heading. <span class="text-muted">It'll
-						blow your mind.</span>
+					A structured investment approach. <span class="text-muted">The next generation in investment.</span>
 				</h2>
-				<p class="lead">Donec ullamcorper nulla non metus auctor
-					fringilla. Vestibulum id ligula porta felis euismod semper.
-					Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-					Fusce dapibus, tellus ac cursus commodo.</p>
+				<p class="lead">Catch The Monkey allows you to take the stress out of trading
+				on Betfair. With high analytical research and quantitative methods each strategy
+				provides customers with all the advantages of porfolio investment from a stockbroker.</p>
 			</div>
 			
 			<div class="col-md-5">
-				<img class="featurette-image img-responsive"
-					data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+				<img class="featurette-image img-responsive" width="700" height="700"
+					src="holder.js/500x500/auto" alt="Generic placeholder image">
 			</div>
 		</div>
 
@@ -280,13 +235,11 @@
 			</div>
 			<div class="col-md-7">
 				<h2 class="featurette-heading">
-					Oh yeah, it's that good. <span class="text-muted">See for
-						yourself.</span>
+					Hassle free, daily returns. <span class="text-muted">Customer orientation.</span>
 				</h2>
-				<p class="lead">Donec ullamcorper nulla non metus auctor
-					fringilla. Vestibulum id ligula porta felis euismod semper.
-					Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-					Fusce dapibus, tellus ac cursus commodo.</p>
+				<p class="lead">All strategies on Catch The Monkey are executed automatically via the 
+				Betfair exchange which means that customers simply sign up to a strategy or strategies of their choice and 
+				sit back and reap the rewards of DAILY returns.</p>
 			</div>
 		</div>
 
@@ -294,12 +247,11 @@
 		<div class="row featurette">
 			<div class="col-md-7">
 				<h2 class="featurette-heading">
-					And lastly, this one. <span class="text-muted">Checkmate.</span>
+					Maximum visibilty, less fees. <span class="text-muted">Control.</span>
 				</h2>
-				<p class="lead">Donec ullamcorper nulla non metus auctor
-					fringilla. Vestibulum id ligula porta felis euismod semper.
-					Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-					Fusce dapibus, tellus ac cursus commodo.</p>
+				<p class="lead">Maximum vivsibility of daily positions on Betfair are accessible on
+				each strategies home page, providing customers with live updates every day and charted progess
+				of daily positions. All this for just a 5% fee, a lot cheaper than your stockbroker!!</p>
 			</div>
 			<div class="col-md-5">
 				<img class="featurette-image img-responsive"

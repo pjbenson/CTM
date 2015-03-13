@@ -6,19 +6,14 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
 <!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
 
 <title>Catch The Monkey</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,9 +27,6 @@ body {
 	padding-top: 70px;
 	padding-bottom: 40px;
 	background-color: #f5f5f5;
-	background-image: url("race.gif");
-	background-position: center;
-	background-repeat: no-repeat;
 }
 
 .form-signin {
@@ -61,6 +53,9 @@ body {
 	margin-bottom: 15px;
 	padding: 7px 9px;
 }
+.errors {
+        color: red; font-weight: bold;
+    }
 </style>
 </head>
 <body>
@@ -81,11 +76,13 @@ body {
 
 	<div class="container">
 
-		<form:form method="POST" commandName="user" class="form-signin">
+		<form:form method="POST" commandName="user" action="" class="form-signin">
 			<h2 class="form-signin-heading">Log In</h2>
 			<form:input path="userEmail"  class="input-block-level" placeholder="Email address"/>
+			<form:errors path="userEmail" cssclass="error"/>
 			<form:password path="userPassword" class="input-block-level" placeholder="Password" />
-			<input type="submit" value="Login" />
+			<form:errors path="userPassword" cssClass="error"/>
+			<input type="submit" value="Login" class="btn btn-large btn-success"/>
 		</form:form>
 
 	</div>

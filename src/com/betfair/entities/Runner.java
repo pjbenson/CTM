@@ -1,10 +1,12 @@
 package com.betfair.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -34,7 +36,7 @@ public class Runner {
 	private StartingPrices sp;
 	@Transient
 	private ExchangePrices ex;
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "runner_order", joinColumns = @JoinColumn(name = "selection_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
 	private List<Order> orders;
 	@Transient
@@ -118,6 +120,13 @@ public class Runner {
 
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
+	}
+	
+	public void addOrder(Order order){
+		if(orders == null){
+			orders = new ArrayList<Order>();
+		}
+		this.orders.add(order);
 	}
 
 	public List<Match> getMatches() {
