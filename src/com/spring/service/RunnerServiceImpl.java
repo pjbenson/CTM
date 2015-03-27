@@ -18,7 +18,7 @@ public class RunnerServiceImpl implements RunnerService {
 	private RunnerDAO runnerDao;
 
 	@Override
-	public Runner getRunner(Long selectionID) {
+	public Runner getRunner(long selectionID) {
 		return runnerDao.getRunner(selectionID);
 	}
 

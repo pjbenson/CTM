@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.bean.UserBean;
 import com.spring.model.LoginForm;
+import com.spring.model.Strategy;
 import com.spring.model.User;
 import com.spring.service.LoginService;
 import com.spring.service.UserService;

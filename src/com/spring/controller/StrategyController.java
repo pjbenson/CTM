@@ -1,5 +1,9 @@
 package com.spring.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +48,8 @@ import com.spring.service.UserService;
 public class StrategyController {
 	
 	@Autowired
+	private UserService userService;
+	@Autowired
 	private RunnerService runnerService;
 	@Autowired
 	private OrderService orderService;
@@ -61,15 +67,24 @@ public class StrategyController {
 			return new ModelAndView("strategyChoice");
 		}
 		else{
+			User loadedUser = userService.getUser(user.getUserId());
 			Account acc = accountService.getAccount(user.getAccount().getId());
 			Strategy strategy = new Strategy();
 			if(acc.getStrategies().isEmpty()){
 				model.addAttribute("strategy", strategy);
 				return new ModelAndView("strategyChoice");
 			}
-			else{
-				for(Strategy strat: acc.getStrategies()){
-					model.put("strategy", strat);
+			else{				
+				for(Strategy strat: loadedUser.getAccount().getStrategies()){
+					if(strat.getName().equals("RAGLAN_ROAD")){
+						model.addAttribute("raglanroad", loadedUser.getAccount().getRaglanroad());
+					}
+					if(strat.getName().equals("GINGER_MAC")){
+						model.addAttribute("gingermc", loadedUser.getAccount().getGingermc());
+					}
+					if(strat.getName().equals("LUCAYAN")){
+						model.addAttribute("lucayan", loadedUser.getAccount().getLucayan());
+					}
 				}
 				return new ModelAndView("strategyChoice");
 			}
@@ -77,11 +92,12 @@ public class StrategyController {
 	}
 
 	@RequestMapping(value = "/strategy1", method = RequestMethod.POST)
-	public ModelAndView chooseStrategy1(@ModelAttribute("strategy") Strategy strategy, ModelMap model) {
+	public ModelAndView chooseStrategy1(@ModelAttribute("strategy") Strategy strategy, ModelMap model) throws ParseException {
 		ModelAndView modelAndView = new ModelAndView();
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		Account acc = accountService.getAccount(user.getAccount().getId());
 		Strategy strat = strategyService.getStrategy(1);
+		acc.setRaglanRegisterDate(getCurrentDate());
 		acc.addStrategy(strat);
 		strat.addAccount(acc);
 		accountService.addStrategyToAccount(acc);
@@ -93,26 +109,41 @@ public class StrategyController {
 	}
 
 	@RequestMapping(value = "/strategy2", method = RequestMethod.POST)
-	public ModelAndView chooseStrategy2(@ModelAttribute("strategy") Strategy strategy, BindingResult result) {
+	public ModelAndView chooseStrategy2(@ModelAttribute("strategy") Strategy strategy, ModelMap model) throws ParseException {
+		ModelAndView modelAndView = new ModelAndView();
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		Account acc = accountService.getAccount(user.getAccount().getId());
 		Strategy strat = strategyService.getStrategy(2);
+		acc.setGingerRegisterDate(getCurrentDate());
 		acc.addStrategy(strat);
 		strat.addAccount(acc);
 		accountService.addStrategyToAccount(acc);
 		strategyService.addAccountToStrategy(strat);
-		return new ModelAndView("redirect:/index.html");
+		model.put("gingermc", strategy);
+		modelAndView.addObject("strategy", strat);
+		return new ModelAndView("redirect:/gingermc.html");
 	}
 
 	@RequestMapping(value = "/strategy3", method = RequestMethod.POST)
-	public ModelAndView chooseStrategy3(@ModelAttribute("strategy") Strategy strategy, BindingResult result) {
+	public ModelAndView chooseStrategy3(@ModelAttribute("strategy") Strategy strategy, ModelMap model) throws ParseException {
+		ModelAndView modelAndView = new ModelAndView();
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		Account acc = accountService.getAccount(user.getAccount().getId());
 		Strategy strat = strategyService.getStrategy(3);
+		acc.setLucayanRegisterDate(getCurrentDate());
 		acc.addStrategy(strat);
 		strat.addAccount(acc);
 		accountService.addStrategyToAccount(acc);
 		strategyService.addAccountToStrategy(strat);
+		model.put("lucayan", strategy);
+		modelAndView.addObject("strategy", strat);
 		return new ModelAndView("redirect:/index.html");
+	}
+	
+	private Date getCurrentDate() throws ParseException{
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date today = new Date();
+		Date todayWithZeroTime =formatter.parse(formatter.format(today));
+		return todayWithZeroTime;
 	}
 }

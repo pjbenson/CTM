@@ -290,7 +290,7 @@
 							<a href="#" class="list-group-item"> <i
 								class="fa fa-user fa-fw"></i>Amount you have invested: <span
 								class="pull-right text-muted small">
-									€${sessionScope.user.account.raglanroad}</span>
+									€${sessionScope.user.account.gingermc}</span>
 							</a> <a href="#" class="list-group-item"> <i
 								class="fa fa-user fa-fw"></i>Date you invested: <span
 								class="pull-right text-muted small">
@@ -300,7 +300,7 @@
 								class="pull-right text-muted small">€${totalUserReturn}</span>
 							</a> <a href="#" class="list-group-item"> <i
 								class="fa fa-users fa-fw"></i> Total number of investors: <span
-								class="pull-right text-muted small">${raglanSubscribers }
+								class="pull-right text-muted small">${gingerMcSubscribers }
 							</span>
 							</a> <a href="#" class="list-group-item"> <i
 								class="fa fa-money fa-fw"></i> Total pool: <span

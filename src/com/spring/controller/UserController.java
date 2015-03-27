@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.bean.UserBean;
 import com.spring.model.Account;
+import com.spring.model.Strategy;
 import com.spring.model.User;
 import com.spring.service.UserService;
 
@@ -51,12 +52,22 @@ public class UserController {
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public ModelAndView showProfile(ModelMap model) {
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
-		Double raglanRoad = user.getAccount().getRaglanroad();
-		Double gingermc = user.getAccount().getGingermc();
-		Double lucayan = user.getAccount().getLucayan();
-		model.addAttribute("raglanroad", raglanRoad);
-		model.addAttribute("gingermc", gingermc);
-		model.addAttribute("lucayan", lucayan);
+		User u = userService.getUser(user.getUserId());
+				
+		for(Strategy strategy: u.getAccount().getStrategies()){
+			if(strategy.getName().equals("RAGLAN_ROAD")){
+				model.addAttribute("raglanroad", user.getAccount().getRaglanroad());
+				System.out.println("YESY");
+			}
+			if(strategy.getName().equals("GINGER_MAC")){
+				model.addAttribute("gingermc", user.getAccount().getGingermc());
+				System.out.println("YESY");
+			}
+			if(strategy.getName().equals("LUCAYAN")){
+				model.addAttribute("lucayan", user.getAccount().getLucayan());
+				System.out.println("YESY");
+			}
+		}	
 		
 		return new ModelAndView("profile");
 	}
@@ -76,11 +87,12 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/updateBalance", method = RequestMethod.POST)
-	public ModelAndView updateBalance(@ModelAttribute("account") Account acc, BindingResult result) {
+	public ModelAndView updateBalance(@ModelAttribute("account") Account acc, Map model) {
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		User userToUpdate = userService.getUser(user.getUserId());
-		userToUpdate.getAccount().setBalance(acc.getBalance());
+		userToUpdate.getAccount().addToBalance(acc.getBalance());
 		userService.updateBalance(userToUpdate);
+		model.put("user", userToUpdate);
 		return new ModelAndView("redirect:/index.html");
 	}
 	
@@ -108,6 +120,9 @@ public class UserController {
 	private User prepareModel(UserBean userBean){
 		Account acc = new Account();
 		acc.setBalance(0.0);
+		acc.addToRaglanroad(0.0);
+		acc.addToLucayan(0.0);
+		acc.addToGingermc(0.0);
 		User user = new User();
 		user.setFirstName(userBean.getFirstName());
 		user.setLastName(userBean.getLastName());
@@ -135,15 +150,5 @@ public class UserController {
 			}
 		}
 		return beans;
-	}
-	
-	private UserBean prepareUserBean(User user){
-		UserBean bean = new UserBean();
-		bean.setId(user.getUserId());
-		bean.setPassword(user.getUserPassword());
-		bean.setAge(user.getUserAge());
-		bean.setEmail(user.getUserEmail());
-		
-		return bean;
 	}
 }

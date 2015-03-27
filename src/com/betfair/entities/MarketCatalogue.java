@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -29,15 +32,20 @@ import javax.persistence.Table;
 public class MarketCatalogue implements Serializable{
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="ID")
+	private int id;
 	@Column(name="MARKET_ID")
 	private String marketId;
 	@Column(name="MARKET_NAME")
 	private String marketName;
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "market_runner", joinColumns = @JoinColumn(name = "market_catalogue_market_id"), inverseJoinColumns = @JoinColumn(name = "runner_catalogue_selection_id"))
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "market_runner", joinColumns = @JoinColumn(name = "market_catalogueId"), inverseJoinColumns = @JoinColumn(name = "runner_catalogueId"))
 	private List<RunnerCatalogue> runners = new ArrayList<RunnerCatalogue>();
 	@Column(name="MARKET_START_NAME")
 	private Date marketStartTime;
+	@Column(name="STRATEGY_ID")
+	private Integer strategyId;
 	
 	public String getMarketId() {
 		return marketId;
@@ -80,6 +88,30 @@ public class MarketCatalogue implements Serializable{
 
 	public String toString() {
 		return getMarketName();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Date getMarketStartTime() {
+		return marketStartTime;
+	}
+
+	public void setMarketStartTime(Date marketStartTime) {
+		this.marketStartTime = marketStartTime;
+	}
+
+	public Integer getStrategyId() {
+		return strategyId;
+	}
+
+	public void setStrategyId(Integer strategyId) {
+		this.strategyId = strategyId;
 	}
 
 }

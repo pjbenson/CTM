@@ -20,21 +20,26 @@ import com.betfair.entities.Runner;
 import com.betfair.entities.RunnerCatalogue;
 import com.betfair.exceptions.APINGException;
 import com.betfair.strategies.Context;
+import com.betfair.strategies.GingerMc;
 import com.betfair.strategies.RaglanRoad;
 
 public class MainDriver {
 	private static RaglanRoad rg = null;
 	private List<MarketCatalogue> list = null;
 	private static Context context;
+	private static Context context2;
 
 	public MainDriver() throws APINGException, ParseException{
 		IMarketDataSource marketDS = new MarketDataWrapper();
 		context = new Context(new RaglanRoad(marketDS));
-		rg = new RaglanRoad(marketDS);
-//		list = rg.getListMarketCatalogue();
-//
+		context2 = new Context(new GingerMc(marketDS));
+//		GingerMc ginger = new GingerMc(marketDS);
+//		ginger.strategyCalculation();
+//		rg = new RaglanRoad(marketDS);
+//		list = ginger.getListMarketCatalogue();
+////
 //		printMarketCatalogue(list);
-//		List<MarketBook> list2 = rg.getMarketPrices();
+//		List<MarketBook> list2 = ginger.getMarketPrices();
 //		printMarketBook(list2);
 //		context.executeStrategy();
 //		rg.strategyCalculation();
@@ -42,30 +47,31 @@ public class MainDriver {
 //		printMarketCatalogue(list);
 	}
 
-	private void printMarketCatalogue(List<MarketCatalogue> mk){
-		for(MarketCatalogue mc: mk){
-			System.out.println("Market Name: "+mc.getMarketName() + "; Id: "+mc.getMarketId()+"Time: "+mc.getMarketTime().toString());
-			for(RunnerCatalogue rc: mc.getRunners()){
-				System.out.println("Runner Name: " + rc.getRunnerName() + "; Id: " + rc.getSelectionId());
-			}
-		}
+//	private void printMarketCatalogue(List<MarketCatalogue> mk){
+//		for(MarketCatalogue mc: mk){
+//			System.out.println("Market Name: "+mc.getMarketName() + "; Id: "+mc.getMarketId()+"Time: "+mc.getMarketTime().toString());
+//			for(RunnerCatalogue rc: mc.getRunners()){
+//				System.out.println("Runner Name: " + rc.getRunnerName() + "; Id: " + rc.getSelectionId());
+//			}
+//		}
+//
+//	}
 
-	}
-
-	private void printMarketBook(List<MarketBook> mb){
-		for(MarketBook market: mb){
-			System.out.println("Market id: "+ market.getMarketId());
-			for(Runner runner: market.getRunners()){
-				System.out.println("Selection id: "+ runner.getSelectionId() + ", Price: "+ runner.getLastPriceTraded());
-			}
-		}
-	}
+//	private void printMarketBook(List<MarketBook> mb){
+//		for(MarketBook market: mb){
+//			System.out.println("Market id: "+ market.getMarketId());
+//			for(Runner runner: market.getRunners()){
+//				System.out.println("Selection id: "+ runner.getSelectionId() + ", Price: "+ runner.getLastPriceTraded());
+//			}
+//		}
+//	}
 
 	static class RunStrategyTimerTask extends TimerTask {
 		@Override
 		public void run(){
 			try {
 				context.executeStrategy();
+				context2.executeStrategy();
 			} catch (APINGException | ParseException e) {
 				e.printStackTrace();
 			}
@@ -73,26 +79,28 @@ public class MainDriver {
 	}
 
 	public static void main(String[] args) throws APINGException, InterruptedException, ParseException{
-//		new MainDriver();
-//		TimerTask timerTask = new RunStrategyTimerTask();
-//		Timer timer = new Timer();
-//		Date date = new Date();
-//		date.setHours(10);
-//		date.setMinutes(30);
-//		timer.schedule(timerTask, date);
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CatchTheMonkey");
-		EntityManager em = emf.createEntityManager();
-		SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
-		Date date = fmt.parse("19-02-2015");
-		Result result = new Result();
-		result.setAmount(2.);
-		result.setDate(date);
-		result.setHorseName("Arthurs Secret");
-		em.getTransaction().begin();
-		em.persist(result);
-		em.getTransaction().commit();
-		em.close();
-		System.out.println("HAPPY DAYS!!");
+		new MainDriver();
+		TimerTask timerTask = new RunStrategyTimerTask();
+		Timer timer = new Timer();
+		Date date = new Date();
+		date.setHours(12);
+		date.setMinutes(30);
+		timer.schedule(timerTask, date);
+		
+		
+//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("CatchTheMonkey");
+//		EntityManager em = emf.createEntityManager();
+//		SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+//		Date date = fmt.parse("04-03-2015");
+//		Result result = new Result();
+//		result.setAmount(12.5);
+//		result.setDate(date);
+//		result.setHorseName("Akorakor");
+//		em.getTransaction().begin();
+//		em.persist(result);
+//		em.getTransaction().commit();
+//		em.close();
+//		System.out.println("HAPPY DAYS!!");
 	}
 
 }

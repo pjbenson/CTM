@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="Results")
-public class Result implements Comparable{
+public class Result {
 	
 	@Id
 	@Column(name="RESULT_ID")
@@ -20,6 +20,8 @@ public class Result implements Comparable{
 	private Date date;
 	@Column(name="HORSE_NAME")
 	private String horseName;
+	@Column(name="STRATEGY_ID")
+	private Integer strategyId;
 	
 	public int getResultId() {
 		return resultId;
@@ -45,11 +47,11 @@ public class Result implements Comparable{
 	public void setHorseName(String horseName) {
 		this.horseName = horseName;
 	}
-	@Override
-	public int compareTo(Object arg0) {
-		Date date = ((Result)arg0).getDate();
-		// TODO Auto-generated method stub
-		return this.date.getDate()-date.getDate();
+	public Integer getStrategyId() {
+		return strategyId;
+	}
+	public void setStrategyId(Integer strategyId) {
+		this.strategyId = strategyId;
 	}
 
 }

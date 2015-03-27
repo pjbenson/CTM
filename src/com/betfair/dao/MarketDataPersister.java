@@ -30,8 +30,8 @@ public class MarketDataPersister {
 	    System.out.println("Market Book saved!!!");
 	}
 	
-	public void persistMarketCatalogue(MarketCatalogue mk) throws ParseException{
-		MarketCatalogue marketC = getOptimisedMarketC(mk);
+	public void persistMarketCatalogue(MarketCatalogue mk, Integer strategyId) throws ParseException{
+		MarketCatalogue marketC = getOptimisedMarketC(mk, strategyId);
 		em.getTransaction().begin();
 		em.persist(marketC);
 		em.getTransaction().commit();
@@ -68,7 +68,7 @@ public class MarketDataPersister {
 		System.out.println("Order saved!!!");
 	}
 	
-	private MarketCatalogue getOptimisedMarketC(MarketCatalogue mk) throws ParseException {
+	private MarketCatalogue getOptimisedMarketC(MarketCatalogue mk, Integer strategyId) throws ParseException {
 		MarketCatalogue marketC = new MarketCatalogue();
 		marketC.setMarketId(mk.getMarketId());
 		marketC.setMarketName(mk.getMarketName());
@@ -78,6 +78,7 @@ public class MarketDataPersister {
 		runners.add(mk.getRunners().get(1));
 		runners.add(mk.getRunners().get(2));
 		marketC.setRunners(runners);
+		marketC.setStrategyId(strategyId);
 		return marketC;
 	}
 	

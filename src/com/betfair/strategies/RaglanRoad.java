@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.Persister;
+
 import com.betfair.api.IMarketDataSource;
 import com.betfair.dao.MarketDataPersister;
 import com.betfair.entities.LimitOrder;
@@ -43,11 +45,12 @@ public class RaglanRoad implements IStrategy{
 		dataSource = marketData;
 		persister = new MarketDataPersister();
 	}
-
+	
+	@Override
 	public void strategyCalculation() throws APINGException, ParseException{
 		List<MarketBook> marketBooks = getMarketPrices();
 		if(marketBooks.isEmpty()){
-			System.out.print("No markets today"+new Date());
+			System.out.print("No markets today for RaglanRoad: "+new Date());
 			return;
 		}
 		List<PlaceInstruction> instructions = new ArrayList<PlaceInstruction>();
@@ -112,11 +115,11 @@ public class RaglanRoad implements IStrategy{
 			instruction3.setLimitOrder(limitOrder3);
 			instructions.add(instruction3);
 			
-			Order o1 = getOrder(instructions.get(0), price1, ratio1, exp1);
+			Order o1 = generateOrderObject(instructions.get(0), price1, ratio1, exp1);
 			persister.persistOrder(o1);
-			Order o2 = getOrder(instructions.get(1), price2, ratio2, exp2);
+			Order o2 = generateOrderObject(instructions.get(1), price2, ratio2, exp2);
 			persister.persistOrder(o2);
-			Order o3 = getOrder(instructions.get(2), price3, ratio3, exp3);
+			Order o3 = generateOrderObject(instructions.get(2), price3, ratio3, exp3);
 			persister.persistOrder(o3);
 			runners = getRunners(mb);
 			Runner r1 = runners.get(0);
@@ -128,7 +131,6 @@ public class RaglanRoad implements IStrategy{
 			Runner r3 = runners.get(2);
 			r3.addOrder(o3);
 			persister.persistRunner(r3);
-			persister.persistMarketBook(mb);
 
 			PlaceExecutionReport placeBetResult = dataSource.placeOrders(mb.getMarketId(), instructions);
 			
@@ -140,6 +142,7 @@ public class RaglanRoad implements IStrategy{
                 System.out.println("The error is: " + placeBetResult.getErrorCode() + ": " + placeBetResult.getErrorCode().getMessage());
             }
 		}
+		persister.closeResources();
 	}
 	
 	public List<Runner> getRunners(MarketBook marketBook){
@@ -150,7 +153,7 @@ public class RaglanRoad implements IStrategy{
 		return runners;
 	}
 	
-	public Order getOrder(PlaceInstruction instruction, Double price, Double size, Double expReturn){
+	public Order generateOrderObject(PlaceInstruction instruction, Double price, Double size, Double expReturn){
 		Order order = new Order();
 		order.setPrice(price);
 		order.setSide("BACK");
@@ -161,6 +164,7 @@ public class RaglanRoad implements IStrategy{
 		return order;
 	}
 	
+	@Override
 	public List<MarketBook> getMarketPrices() throws APINGException, ParseException{
 		List<MarketCatalogue> markets = getListMarketCatalogue();
 		List<String> marketIds = new ArrayList<String>();
@@ -172,7 +176,8 @@ public class RaglanRoad implements IStrategy{
 
 		return dataSource.listMarketBook(marketIds, OrderProjection.EXECUTABLE);
 	}
-
+	
+	@Override
 	public List<MarketCatalogue> getListMarketCatalogue() throws APINGException, ParseException{
 		Date dt = new Date();
 		dt.setHours(17);
@@ -198,10 +203,9 @@ public class RaglanRoad implements IStrategy{
 				persister.persistRunnerCatalogue(marketCatalogue.getRunners().get(0));
 				persister.persistRunnerCatalogue(marketCatalogue.getRunners().get(1));
 				persister.persistRunnerCatalogue(marketCatalogue.getRunners().get(2));
-				persister.persistMarketCatalogue(marketCatalogue);
+				persister.persistMarketCatalogue(marketCatalogue, 1);
 			}
 		}
-		//persister.closeResources();
 		return result;
 	}
 

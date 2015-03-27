@@ -15,8 +15,15 @@ public class RunnerDAOImpl implements RunnerDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public Runner getRunner(Long selectionID) {
-		return (Runner) sessionFactory.getCurrentSession().get(Runner.class, selectionID);
+	public Runner getRunner(long selectionID) {
+		List<Runner> list = getRunnersList();
+		Runner r = null;
+		for(Runner runner: list){
+			if(runner.getSelectionId().equals(selectionID)){
+				r = runner;
+			}
+		}
+		return r;
 	}
 
 	@SuppressWarnings("unchecked")

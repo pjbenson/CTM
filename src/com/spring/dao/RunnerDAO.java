@@ -6,7 +6,7 @@ import com.betfair.entities.Runner;
 
 public interface RunnerDAO {
 	
-	public Runner getRunner(Long selectionID);
+	public Runner getRunner(long selectionID);
 	
 	public List<Runner> getRunnersList();
 }

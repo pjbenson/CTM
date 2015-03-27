@@ -158,7 +158,7 @@ body {
 				<p>Raglan road is a high risk/high reward strategy that parses
 					and process very specific data obtained from the Betfair exchange
 					and seeks to make profit through a range of high risk positions.</p>
-				<c:if test="${not empty sessionScope.user}">
+				<c:if test="${empty raglanroad}">
 					<form:form method="POST" action="/CTM/strategy1.html">
 						<input type="submit" value="Register"
 							class="btn btn-large btn-success" />
@@ -171,7 +171,7 @@ body {
 					dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
 					ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
 					magna mollis euismod. Donec sed odio dui.</p>
-				<c:if test="${not empty sessionScope.user}">
+				<c:if test="${empty gingermc}">
 					<form:form method="POST" action="/CTM/strategy2.html">
 						<input type="submit" value="Register"
 							class="btn btn-large btn-success" />
@@ -179,12 +179,12 @@ body {
 				</c:if>
 			</div>
 			<div class="span4">
-				<h2>A N Another</h2>
+				<h2>Lucayan</h2>
 				<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in,
 					egestas eget quam. Vestibulum id ligula porta felis euismod semper.
 					Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
 					nibh, ut fermentum massa.</p>
-				<c:if test="${not empty sessionScope.user}">
+				<c:if test="${empty lucayan}">
 					<form:form method="POST" action="/CTM/strategy3.html">
 						<input type="submit" value="Register"
 							class="btn btn-large btn-success" />

@@ -147,7 +147,7 @@ footer {
 									${sessionScope.user.account.balance}
 								</p>
 								<p>
-									<strong>Strategies: ${sessionScope.strategy.name}</strong>
+									<strong>Your Strategies: </strong>
 								</p>
 							</div>
 							<!--/col-->
@@ -168,7 +168,7 @@ footer {
 									<h2>
 										<strong><i class="glyphicon glyphicon-euro"></i>${gingermc}</strong>
 									</h2>
-									<a class="btn btn-info btn-block" href="raglanroad.html"
+									<a class="btn btn-info btn-block" href="gingermc.html"
 										role="button">Ginger Mc</a>
 								</div>
 							</c:if>

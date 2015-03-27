@@ -155,7 +155,7 @@
 	</div>
 	<!-- /.carousel -->
 
-
+	<hr class="featurette-divider">
 	<!-- Marketing messaging and featurettes
     ================================================== -->
 	<!-- Wrap the rest of the page in another container to center all the content. -->
@@ -210,6 +210,8 @@
 			<!-- /.col-lg-4 -->
 		</div>
 		<!-- /.row -->
+		
+		<hr class="featurette-divider">
 
 		<div class="row featurette">
 			<div class="col-md-7">
@@ -222,16 +224,16 @@
 			</div>
 			
 			<div class="col-md-5">
-				<img class="featurette-image img-responsive" width="700" height="700"
-					src="holder.js/500x500/auto" alt="Generic placeholder image">
+				<img class="featurette-image img-responsive" width="700" height="600"
+					src="bootstrap/img/pricevolume.png" alt="Generic placeholder image">
 			</div>
 		</div>
 
 
 		<div class="row featurette">
 			<div class="col-md-5">
-				<img class="featurette-image img-responsive"
-					data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+				<img class="featurette-image img-responsive" width="700" height="700"
+					src="bootstrap/img/betfair.png" alt="Generic placeholder image">
 			</div>
 			<div class="col-md-7">
 				<h2 class="featurette-heading">
@@ -254,8 +256,8 @@
 				of daily positions. All this for just a 5% fee, a lot cheaper than your stockbroker!!</p>
 			</div>
 			<div class="col-md-5">
-				<img class="featurette-image img-responsive"
-					data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+				<img class="featurette-image img-responsive" width="700" height="700"
+					src="bootstrap/img/charts.png" alt="Generic placeholder image">
 			</div>
 		</div>
 

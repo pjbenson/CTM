@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -18,6 +20,9 @@ import javax.persistence.Transient;
 @Table(name="Runner")
 public class Runner {
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="ID")
+	private int id;
 	@Column(name="SELECTION_ID")
 	private Long selectionId;
 	@Transient
@@ -37,7 +42,7 @@ public class Runner {
 	@Transient
 	private ExchangePrices ex;
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "runner_order", joinColumns = @JoinColumn(name = "selection_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
+	@JoinTable(name = "runner_order", joinColumns = @JoinColumn(name = "runner_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
 	private List<Order> orders;
 	@Transient
 	private List<Match> matches;
@@ -146,6 +151,14 @@ public class Runner {
 				+ getRemovalDate() + "," + "sp=" + getSp() + "," + "ex="
 				+ getEx() + "," + "orders=" + getOrders() + "," + "matches="
 				+ getMatches() + "," + "}";
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

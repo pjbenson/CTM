@@ -2,6 +2,7 @@ package com.spring.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -40,6 +40,24 @@ public class Account implements Serializable {
 	@Column(name="lucayan")
 	private Double lucayan;
 	
+	@Column(name="raglan_register_date")
+	private Date raglanRegisterDate;
+	
+	@Column(name="ginger_register_date")
+	private Date gingerRegisterDate;
+	
+	@Column(name="lucayan_register_date")
+	private Date lucayanRegisterDate;
+	
+	@Column(name="raglan_returns")
+	private Double raglanReturns;
+	
+	@Column(name="ginger_returns")
+	private Double gingerReturns;
+	
+	@Column(name="lucayan_returns")
+	private Double lucayanReturns;
+	
 	@OneToOne
     @PrimaryKeyJoinColumn
 	private User user;
@@ -59,6 +77,10 @@ public class Account implements Serializable {
 	}
 	public void setBalance(Double balance) {
 		this.balance = balance;
+	}
+	public void addToBalance(Double amount){
+		if(this.balance == null)this.balance = amount;
+		this.balance = this.balance + amount;
 	}
 	public User getUser() {
 		return user;
@@ -100,5 +122,44 @@ public class Account implements Serializable {
 		if(this.lucayan == null)
 			this.lucayan = 0.0;
 		this.lucayan = this.lucayan + lucayan;
+	}
+	public Date getRaglanRegisterDate() {
+		return raglanRegisterDate;
+	}
+	public void setRaglanRegisterDate(Date raglanRegisterDate) {
+		this.raglanRegisterDate = raglanRegisterDate;
+	}
+	public Date getGingerRegisterDate() {
+		return gingerRegisterDate;
+	}
+	public void setGingerRegisterDate(Date gingerRegisterDate) {
+		this.gingerRegisterDate = gingerRegisterDate;
+	}
+	public Date getLucayanRegisterDate() {
+		return lucayanRegisterDate;
+	}
+	public void setLucayanRegisterDate(Date lucayanRegisterDate) {
+		this.lucayanRegisterDate = lucayanRegisterDate;
+	}
+	public Double getRaglanReturns() {
+		return raglanReturns;
+	}
+	public void addToRaglanReturns(Double amount) {
+		if(this.raglanReturns == null)this.raglanReturns = 0.0;
+		this.raglanReturns = this.raglanReturns + amount;
+	}
+	public Double getGingerReturns() {
+		return gingerReturns;
+	}
+	public void addToGingerReturns(Double amount) {
+		if(this.gingerReturns == null)this.gingerReturns = 0.0;
+		this.gingerReturns = this.gingerReturns + amount;
+	}
+	public Double getLucayanReturns() {
+		return lucayanReturns;
+	}
+	public void addToLucayanReturns(Double amount) {
+		if(this.lucayanReturns == null)this.lucayanReturns = 0.0;
+		this.lucayanReturns = this.lucayanReturns + amount;
 	}
 }
